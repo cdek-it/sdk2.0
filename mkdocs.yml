@@ -1,0 +1,13 @@
+# mkdocs.yml
+# Read the Docs configuration file
+# See https://www.mkdocs.org/user-guide/configuration/ for details
+site_name: sdk2.0
+theme: readthedocs
+lang: ru
+repo_url: https://github.com/cdek-it/sdk2.0
+nav:
+  - CDEK-IT SDK2.0: index.md
+markdown_extensions:
+  - toc:
+      permalink: True
+  - attr_list
