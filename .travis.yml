@@ -1,0 +1,13 @@
+language: php
+
+php:
+  - 7.1
+  - 7.2
+  - 7.3
+
+before_script:
+  - composer install
+  - ./vendor/bin/phpcs -n --standard=PSR12 src/ tests/
+
+script:
+  - ./vendor/bin/phpunit --coverage-text

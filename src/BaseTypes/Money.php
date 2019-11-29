@@ -27,7 +27,7 @@ class Money extends Base
     /**
      * Сумма НДС
      * @Type("float")
-     * @var float
+     * @var float|null
      */
     public $vat_sum;
 

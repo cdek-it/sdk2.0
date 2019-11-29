@@ -222,11 +222,13 @@ class Api
         $url = ($this->test ? Constants::API_URL_TEST : Constants::API_URL) . $url;
         $uri = new Uri($url);
         try {
-            $headers = ['Accept' => 'application/json',];
+            $headers = [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ];
             if ($this->isExpired() && strripos($url, 'oauth/token') === false) {
                 $this->authorize();
-                $headers['Content-Type'] = 'application/json';
-            } else {
+            } elseif (strripos($url, 'oauth/token') !== false) {
                 $headers['Content-Type'] = 'application/x-www-form-urlencoded';
             }
 

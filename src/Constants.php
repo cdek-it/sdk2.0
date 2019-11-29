@@ -47,9 +47,9 @@ class Constants
 
     /**
      * Опасный груз.
-     * @var int
+     * @var string
      */
-    const SERVICE_DANGEROUS_GOODS = 7;
+    const SERVICE_DANGEROUS_GOODS = 'DANGER_CARGO';
 
     /**
      * Забор в городе отправителе.
@@ -65,27 +65,15 @@ class Constants
 
     /**
      * Упаковка 1 310*215*280мм
-     * @var int
+     * @var string
      */
-    const SERVICE_PACKAGE_1 = 24;
+    const SERVICE_PACKAGE_1 = 'PACKAGE_1';
 
     /**
      * Примерка на дому.
      * @var string
      */
     const SERVICE_TRY_AT_HOME = 'TRYING_ON';
-
-    /**
-     * Доставка лично в руки.
-     * @var int
-     */
-    const SERVICE_PERSONAL_DELIVERY = 31;
-
-    /**
-     * Скан документов.
-     * @var int
-     */
-    const SERVICE_DOCUMENTS_COPY = 32;
 
     /**
      * Частичная доставка.
@@ -106,34 +94,130 @@ class Constants
     const SERVICE_REVERSE = 'REVERSE';
 
     /**
-     * Статус: Создан
-     * @var int
+     * Статус: Принят
+     * @var string
      */
-    const STATUS_CREATED = 1;
+    const STATUS_ACCEPTED = 'ACCEPTED';
+
+    /**
+     * Статус: Создан
+     * @var string
+     */
+    const STATUS_CREATED = 'CREATED';
 
     /**
      * Статус: Удален
-     * @var int
+     * @var string
      */
-    const STATUS_DELETED = 2;
+    const STATUS_DELETED = 'REMOVED';
 
     /**
      * Статус: Принят на склад отправителя
-     * @var int
+     * @var string
      */
-    const STATUS_TAKEIN = 3;
+    const STATUS_TAKEIN = 'RECEIVED_AT_SENDER_WAREHOUSE';
+
+    /**
+     * Статус: Выдан на отправку в городе отправителе
+     * @var string
+     */
+    const STATUS_READY_FOR_SHIPMENT_IN_SENDER_CITY = 'READY_FOR_SHIPMENT_IN_SENDER_CITY';
+
+    /**
+     * Статус: Возвращен на склад отправителя
+     * @var string
+     */
+    const STATUS_RETURNED_TO_SENDER_CITY_WAREHOUSE = 'RETURNED_TO_SENDER_CITY_WAREHOUSE';
+
+    /**
+     * Статус: Сдан перевозчику в городе отправителе
+     * @var string
+     */
+    const STATUS_TAKEN_BY_TRANSPORTER_FROM_SENDER_CITY = 'TAKEN_BY_TRANSPORTER_FROM_SENDER_CITY';
+
+    /**
+     * Статус: Отправлен в г. транзит
+     * @var string
+     */
+    const STATUS_SENT_TO_TRANSIT_CITY = 'SENT_TO_TRANSIT_CITY';
+
+    /**
+     * Статус: Встречен в г. транзите
+     * @var string
+     */
+    const STATUS_ACCEPTED_IN_TRANSIT_CITY = 'ACCEPTED_IN_TRANSIT_CITY';
+
+    /**
+     * Статус: Принят на склад транзита
+     * @var string
+     */
+    const STATUS_ACCEPTED_AT_TRANSIT_WAREHOUSE = 'ACCEPTED_AT_TRANSIT_WAREHOUSE';
+
+    /**
+     * Статус: Возвращен на склад транзита
+     * @var string
+     */
+    const STATUS_RETURNED_TO_TRANSIT_WAREHOUSE = 'RETURNED_TO_TRANSIT_WAREHOUSE';
+
+    /**
+     * Статус: Выдан на отправку в г. транзите
+     * @var string
+     */
+    const STATUS_READY_FOR_SHIPMENT_IN_TRANSIT_CITY = 'READY_FOR_SHIPMENT_IN_TRANSIT_CITY';
+
+    /**
+     * Статус: Сдан перевозчику в г. транзите
+     * @var string
+     */
+    const STATUS_TAKEN_BY_TRANSPORTER_FROM_TRANSIT_CITY = 'TAKEN_BY_TRANSPORTER_FROM_TRANSIT_CITY';
+
+    /**
+     * Статус: Отправлен в г. получатель
+     * @var string
+     */
+    const STATUS_SENT_TO_RECIPIENT_CITY = 'SENT_TO_RECIPIENT_CITY';
+
+    /**
+     * Статус: Встречен в г. получателе
+     * @var string
+     */
+    const STATUS_ARRIVED_AT_RECIPIENT_CITY = 'ARRIVED_AT_RECIPIENT_CITY';
+
+    /**
+     * Статус: Принят на склад доставки
+     * @var string
+     */
+    const STATUS_ACCEPTED_AT_RECIPIENT_CITY_WAREHOUSE = 'ACCEPTED_AT_RECIPIENT_CITY_WAREHOUSE';
+
+    /**
+     * Статус: Принят на склад до востребования
+     * @var string
+     */
+    const STATUS_ACCEPTED_AT_PICK_UP_POINT = 'ACCEPTED_AT_PICK_UP_POINT';
+
+    /**
+     * Статус: Выдан на доставку
+     * @var string
+     */
+    const STATUS_TAKEN_BY_COURIER = 'TAKEN_BY_COURIER';
+
+    /**
+     * Статус: Возвращен на склад доставки
+     * @var string
+     */
+    const STATUS_RETURNED_TO_RECIPIENT_CITY_WAREHOUSE = 'RETURNED_TO_RECIPIENT_CITY_WAREHOUSE';
 
     /**
      * Статус: Вручен
-     * @var int
+     * @var string
      */
-    const STATUS_DELIVERED = 4;
+    const STATUS_DELIVERED = 'DELIVERED';
 
     /**
      * Статус: Не вручен
-     * @var int
+     * @var string
      */
-    const STATUS_NOT_DELIVERED = 5;
+    const STATUS_NOT_DELIVERED = 'NOT_DELIVERED';
 
     /**
      * Параметр типа аутентификации

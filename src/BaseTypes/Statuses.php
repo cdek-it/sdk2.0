@@ -50,7 +50,7 @@ class Statuses
      * @Type("string")
      * @var string
      */
-    public $status_reason_code;
+    public $reason_code;
 
     /**
      * Дата и время установки статуса
@@ -58,4 +58,11 @@ class Statuses
      * @var string
      */
     public $date_time;
+
+    /**
+     * Наименование города(места), где произошло изменение статуса
+     * @Type("string")
+     * @var string
+     */
+    public $city;
 }

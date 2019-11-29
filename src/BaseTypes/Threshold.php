@@ -34,7 +34,7 @@ class Threshold extends Base
     /**
      * Сумма НДС, включённая в доп. сбор за доставку
      * @Type("float")
-     * @var float
+     * @var float|null
      */
     public $vat_sum;
 

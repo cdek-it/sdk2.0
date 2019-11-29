@@ -27,6 +27,20 @@ class Order extends Base
     public $uuid;
 
     /**
+     * Тип заказа
+     * @Type("integer")
+     * @var int
+     */
+    public $type = 1;
+
+    /**
+     * Номер заказа в системе СДЭК
+     * @Type("integer")
+     * @var int
+     */
+    public $cdek_number;
+
+    /**
      * Номер заказа в ИС Клиента
      * @Type("string")
      * @var string
