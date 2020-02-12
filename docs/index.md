@@ -269,7 +269,7 @@ $cdek->setSecure('secure');
 
 $hook = BaseTypes\WebHook::create([
             'url' => 'https://url_in_your_site/webhooks',
-            'type' => BaseTypes\Constants::HOOK_TYPE_STATUS
+            'type' => CdekSDK2\Constants::HOOK_TYPE_STATUS
         ]);
 
 $result = $cdek->webhooks()->add($hook);
