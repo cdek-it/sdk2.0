@@ -23,7 +23,7 @@ class Webhooks extends ActionsWithDelete
      * URL для запросов к API
      * @var string
      */
-    const URL = '/webhooks';
+    public const URL = '/webhooks';
 
     /**
      * Добавление нового слушателя вебхуков
@@ -35,6 +35,16 @@ class Webhooks extends ActionsWithDelete
     {
         $params = $this->serializer->toArray($webHook);
         return $this->preparedAdd($params);
+    }
+
+    /**
+     * Получение списка вебхуков
+     * @return ApiResponse
+     * @throws \CdekSDK2\Exceptions\RequestException
+     */
+    public function list(): ApiResponse
+    {
+        return $this->get('');
     }
 
     /**
