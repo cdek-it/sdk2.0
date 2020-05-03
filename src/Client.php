@@ -10,6 +10,7 @@
 namespace CdekSDK2;
 
 use CdekSDK2\Actions\Intakes;
+use CdekSDK2\Actions\LocationCities;
 use CdekSDK2\Actions\LocationRegions;
 use CdekSDK2\Actions\Offices;
 use CdekSDK2\Actions\Orders;
@@ -65,6 +66,11 @@ class Client
      * @var LocationRegions
      */
     private $regions;
+
+    /**
+     * @var LocationCities
+     */
+    private $cities;
 
     /**
      * Client constructor.
@@ -224,6 +230,17 @@ class Client
             $this->regions = new LocationRegions($this->http_client, $this->serializer);
         }
         return $this->regions;
+    }
+
+    /**
+     * @return LocationCities
+     */
+    public function cities(): LocationCities
+    {
+        if ($this->cities === null) {
+            $this->cities = new LocationCities($this->http_client, $this->serializer);
+        }
+        return $this->cities;
     }
 
     /**
