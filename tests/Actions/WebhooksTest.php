@@ -75,4 +75,10 @@ class WebhooksTest extends TestCase
         $response = $this->webhooks->get('webhook');
         $this->assertInstanceOf(ApiResponse::class, $response);
     }
+
+    public function testList()
+    {
+        $response = $this->webhooks->list();
+        $this->assertInstanceOf(ApiResponse::class, $response);
+    }
 }

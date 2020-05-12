@@ -38,7 +38,7 @@ $cdek->setTest(true);
 
 ## Использование {: #methods }
 
-Список реализованных методов для API
+Список реализованных методов API
 
 Перечень основных методов класса `Client` ниже.
 
@@ -50,6 +50,7 @@ $cdek->setTest(true);
 | [Удаление заказа](#orders_delete) | `orders()->delete()` |
 | [Подписка на вебхуки](#webhooks_add) | `webhooks()->add()` |
 | [Получение информации о подписке на вебхуки](#webhooks_get) | `webhooks()->get()` |
+| [Получение списка всех подписок на вебхуки](#webhooks_list) | `webhooks()->list()` |
 | [Удаление подписки на вебхуки](#webhooks_delete) | `webhooks()->delete()` |
 | [Получение информации из пришедших вебхуков](#webhooks_parse) | `webhooks()->parse()` |
 | [Создание заявки на вызов курьера](#intakes_add) | `intakes()->add()` |
@@ -57,13 +58,20 @@ $cdek->setTest(true);
 | [Удаление заявки на вызов курьера](#intakes_delete) | `intakes()->delete()` |
 | [Получение списка ПВЗ](#offices_get) | `offices()->get()` |
 | [Получение списка ПВЗ с применением фильтра](#offices_getFiltered) | `offices()->getFiltered()` |
+| [Создание запроса на формирование печатной формы накладной](#invoice_add) | `invoice()->add()` |
+| [Получение информации о состоянии печатной формы накладной](#invoice_get) | `invoice()->get()` |
+| [Скачивание печатной формы накладной](#invoice_download) | `invoice()->download()` |
+| [Создание запроса на формирование печатной формы ШК-места](#barcodes_add) | `barcodes()->add()` |
+| [Получение информации о состоянии печатной формы ШК-места](#barcodes_get) | `barcodes()->get()` |
+| [Скачивание печатной формы ШК-места](#barcodes_download) | `barcodes()->download()` |
+| [Получение cписка городов](#cities_getFiltered) | `cities()->getFiltered()` |
+| [Получение cписка регионов](#regions_getFiltered) | `regions()->getFiltered()` |
 
 
 >***И список методов, которые в разработке:***
 > - Изменение заказа
-> - Списки городов и регионов
-> - Печать накладной
-> - Печать ШК
+> - Отображение информации о возвратах
+> - Вебхуки печатных форм
 
 Документация по API 2.0 сервиса интеграции доступна по [ссылке](https://confluence.cdek.ru/pages/viewpage.action?pageId=29923741)
 
@@ -126,9 +134,14 @@ if ($sender->validate() && $rec->validate()) {
 ### Авторизация {: #authorize }
 
 ```php
-$cdek = new \CdekSDK2\Client();
+$client = new Psr18Client();
+$cdek = new \CdekSDK2\Client($client);
 $cdek->setAccount('account');
 $cdek->setSecure('secure');
+
+// или
+// $cdek = new \CdekSDK2\Client($client, 'account', 'secure');
+
 try {
     $cdek->authorize();
     $cdek->getToken();
@@ -146,7 +159,7 @@ try {
 
 В связи с тем, что используется токенная авторизация, то после прохождения авторизации, результат выполнения - можно сохранить в кэш и в течении 6 минут использовать.
 
-Токен и его время устаревания можно получить методами `getToken()` и `getExpire()` соответвенно.
+Токен и его время устаревания можно получить методами `getToken()` и `getExpire()` соответственно.
 
 
 ### Создание заказа {: #orders_add }
@@ -154,9 +167,7 @@ try {
 ```php
 use CdekSDK2\BaseTypes;
 
-$cdek = new \CdekSDK2\Client();
-$cdek->setAccount('account');
-$cdek->setSecure('secure');
+$cdek = new \CdekSDK2\Client($client, 'account', 'secure');
 
 $order = BaseTypes\Order::create([
     'number' => '3627',
@@ -182,17 +193,17 @@ $order = BaseTypes\Order::create([
     'packages' => [
         BaseTypes\Package::create([
             'number' => 'number1',
-            'weight' => '1',
-            'length' => '12',
-            'width' => '11',
-            'height' => '8',
+            'weight' => 1000,
+            'length' => 12,
+            'width' => 11,
+            'height' => 8,
             'items' => [
                 BaseTypes\Item::create([
                     'name' => 'Toys for man',
                     'ware_key' => 'Items_number_5',
                     'payment' => BaseTypes\Money::create(['value' => 0]),
                     'cost' => 0,
-                    'weight' => 1,
+                    'weight' => 1000,
                     'amount' => 1,
                 ]),
             ]
@@ -201,11 +212,12 @@ $order = BaseTypes\Order::create([
 ]);
 
 try {
-    $res = $cdek->orders()->add($order);
+    $result = $cdek->orders()->add($order);
     if ($result->isOk()) {
         //Запрос успешно выполнился
         $response_order = $cdek->formatResponse($result, BaseTypes\Order::class);
-        $response_order->uuid;
+        // получаем UUID заказа и сохраняем его
+        $response_order->entity->uuid;
     }
     if ($result->hasErrors()) {
         // Обрабатываем ошибки
@@ -221,15 +233,13 @@ try {
 ### Получение информации по заказу {: #orders_get }
 
 ```php
-$cdek = new \CdekSDK2\Client();
-$cdek->setAccount('account');
-$cdek->setSecure('secure');
+$cdek = new \CdekSDK2\Client($client, 'account', 'secure');
 
 $result = $cdek->orders()->get($uuid);
 if ($result->isOk()) {
     //Запрос успешно выполнился
-    $response_order = $cdek->formatResponse($result, BaseTypes\Order::class);
-    $response_order->uuid;
+    $response_order = $cdek->formatResponse($result, \CdekSDK2\BaseTypes\Order::class);
+    $response_order->entity->uuid;
 }
 
 ```
@@ -239,9 +249,7 @@ if ($result->isOk()) {
 ### Удаление заказа {: #orders_delete }
 
 ```php
-$cdek = new \CdekSDK2\Client();
-$cdek->setAccount('account');
-$cdek->setSecure('secure');
+$cdek = new \CdekSDK2\Client($client, 'account', 'secure');
 
 $result = $cdek->orders()->delete($uuid);
 if ($result->hasErrors()) {
@@ -250,8 +258,8 @@ if ($result->hasErrors()) {
 
 if ($result->isOk()) {
     //Запрос успешно выполнился
-    $response_order = $client->formatResponse($result, BaseTypes\Order::class);
-    $response_order->uuid;
+    $response_order = $cdek->formatResponse($result, \CdekSDK2\BaseTypes\Order::class);
+    $response_order->entity->uuid;
 }
 
 ```
@@ -261,16 +269,12 @@ if ($result->isOk()) {
 ### Подписка на вебхуки {: #webhooks_add }
 
 ```php
-use CdekSDK2\BaseTypes;
+use CdekSDK2\BaseTypes\WebHook;
 
-$cdek = new \CdekSDK2\Client();
-$cdek->setAccount('account');
-$cdek->setSecure('secure');
-
-$hook = BaseTypes\WebHook::create([
-            'url' => 'https://url_in_your_site/webhooks',
-            'type' => CdekSDK2\Constants::HOOK_TYPE_STATUS
-        ]);
+$hook = WebHook::create([
+    'url' => 'https://url_in_your_site/webhooks',
+    'type' => CdekSDK2\Constants::HOOK_TYPE_STATUS
+]);
 
 $result = $cdek->webhooks()->add($hook);
 if ($result->hasErrors()) {
@@ -279,8 +283,8 @@ if ($result->hasErrors()) {
 
 if ($result->isOk()) {
     //Запрос успешно выполнился
-    $webhook = $cdek->formatResponse($result, BaseTypes\WebHook::class);
-    $webhook->uuid;
+    $response = $cdek->formatResponse($result, WebHook::class);
+    $response->entity->uuid;
 }
 ```
 
@@ -288,7 +292,7 @@ if ($result->isOk()) {
 ### Получение информации о подписке на вебхуки {: #webhooks_get }
 
 ```php
-$cdek = new \CdekSDK2\Client();
+
 $result = $cdek->webhooks()->get($uuid);
 if ($result->hasErrors()) {
     // Обрабатываем ошибки
@@ -296,16 +300,30 @@ if ($result->hasErrors()) {
 
 if ($result->isOk()) {
     //Запрос успешно выполнился
-    $webhook = $cdek->formatResponse($result, BaseTypes\WebHook::class);
-    $webhook->uuid;
+    $response = $cdek->formatResponse($result, BaseTypes\WebHook::class);
+    $response->entity->uuid;
 }
 ```
 
 
+### Получение списка всех подписок на вебхуки {: #webhooks_list }
+
+```php
+$result = $cdek->webhooks()->list();
+if ($result->hasErrors()) {
+    // Обрабатываем ошибки
+}
+
+if ($result->isOk()) {
+    //Запрос успешно выполнился
+    $response = $cdek->formatResponseList($res, BaseTypes\WebHookList::class);
+    $response->items;
+}
+```
+
 ### Удаление подписки на вебхуки {: #webhooks_delete }
 
 ```php
-$cdek = new \CdekSDK2\Client();
 $result = $cdek->webhooks()->delete($uuid);
 if ($result->hasErrors()) {
     // Обрабатываем ошибки
@@ -313,8 +331,8 @@ if ($result->hasErrors()) {
 
 if ($result->isOk()) {
     //Запрос успешно выполнился
-    $webhook = $cdek->formatResponse($result, BaseTypes\WebHook::class);
-    $webhook->uuid;
+    $response = $cdek->formatResponse($result, BaseTypes\WebHook::class);
+    $response->entity->uuid;
 }
 ```
 
@@ -323,15 +341,82 @@ if ($result->isOk()) {
 
 ```php
 $cdek = new \CdekSDK2\Client();
-$result = $cdek->webhooks()->parse($data);
+$input_hook = $cdek->webhooks()->parse($data);
+// и можно получать информацию о статусах заказа
+$input_hook->uuid;
+$input_hook->attributes->cdek_number;
+$input_hook->attributes->reason_code;
+```
+
+### Создание заявки на вызов курьера {: #intakes_add }
+
+```php
+use CdekSDK2\BaseTypes\Intake;
+
+$sender = \CdekSDK2\BaseTypes\Contact::create([
+    'name' => 'Vasya',
+    'company' => 'CDEK-IT',
+    'email' => 'vasya@cdek.it',
+    'phones' => [
+        \CdekSDK2\BaseTypes\Phone::create(['number' => '+79991112222'])
+    ]
+]);
+
+$intake = Intake::create([]);
+$intake->intake_date = '2020-12-02';
+$intake->intake_time_from = '09:00';
+$intake->intake_time_to = '19:00';
+$intake->name = 'Ждем курьера за 20 товарами';
+$intake->weight = 10000;
+$intake->sender = $sender;
+$intake->from_location = \CdekSDK2\BaseTypes\Location::create([
+    'address' => 'Кутузовский проспект 1-1',
+    'code' => 137,
+    'country_code' => 'RU'
+]);
+
+$result = $cdek->webhooks()->add($intake);
 if ($result->hasErrors()) {
     // Обрабатываем ошибки
 }
 
 if ($result->isOk()) {
     //Запрос успешно выполнился
-    $input_hook = $cdek->formatResponse($result, BaseTypes\InputHook::class);
-    $input_hook->uuid;
+    $response = $cdek->formatResponse($result, Intake::class);
+    $response->entity->uuid;
+}
+```
+
+
+### Получение информации о заявке на вызов курьера {: #intakes_get }
+
+```php
+
+$result = $cdek->intakes()->get($uuid);
+if ($result->hasErrors()) {
+    // Обрабатываем ошибки
+}
+
+if ($result->isOk()) {
+    //Запрос успешно выполнился
+    $response = $cdek->formatResponse($result, \CdekSDK2\BaseTypes\Intake::class);
+    $response->entity->uuid;
+}
+```
+
+
+### Удаление заявки на вызов курьера {: #intakes_delete }
+
+```php
+$result = $cdek->intakes()->delete($uuid);
+if ($result->hasErrors()) {
+    // Обрабатываем ошибки
+}
+
+if ($result->isOk()) {
+    //Запрос успешно выполнился
+    $response = $cdek->formatResponse($result, \CdekSDK2\BaseTypes\Intake::class);
+    $response->entity->uuid;
 }
 ```
 
@@ -339,14 +424,14 @@ if ($result->isOk()) {
 ### Получение списка ПВЗ {: #offices_get }
 
 ```php
-$cdek = new \CdekSDK2\Client();
 $result = $cdek->offices()->get();
 if ($result->isOk()) {
     //Запрос успешно выполнился
-    $pvzlist = $client->formatResponse($result, BaseTypes\PickupPointList::class);
-    foreach($pvzlist->pvz as $pvz) {
-        $pvz->Code;
-        $pvz->Address;
+    $pvzlist = $cdek->formatResponseList($result, \CdekSDK2\BaseTypes\PickupPointList::class);
+    foreach($pvzlist->items as $pvz) {
+        $pvz->code;
+        $pvz->location->address;
+        $pvz->location->address_full;
     }
 }
 ```
@@ -357,17 +442,215 @@ if ($result->isOk()) {
 ### Получение списка ПВЗ с применением фильтра {: #offices_getFiltered }
 
 ```php
-$cdek = new \CdekSDK2\Client();
-$result = $cdek->offices()->getFiltered(['countryiso' => 'kz']);
+$result = $cdek->offices()->getFiltered(['country_code' => 'kz']);
 if ($result->isOk()) {
     //Запрос успешно выполнился
-    $pvzlist = $client->formatResponse($result, BaseTypes\PickupPointList::class);
-    foreach($pvzlist->pvz as $pvz) {
-        $pvz->Code;
-        $pvz->Address;
+    $pvzlist = $cdek->formatResponseList($result, \CdekSDK2\BaseTypes\PickupPointList::class);
+    foreach($pvzlist->items as $pvz) {
+        $pvz->code;
+        $pvz->location->address;
     }
 }
 ```
 В результате данного запроса будут отображены пункты выдачи заказов расположенные в Казахстане.
 
-Доступные фильтры описаны в константе `\CdekSDK2\Constants::OFFICE_FILTER` 
+Доступные фильтры описаны в константе `\CdekSDK2\Actions\Offices::FILTER` 
+
+
+### Создание запроса на формирование печатной формы накладной {: #invoice_add }
+
+```php
+use CdekSDK2\BaseTypes\Invoice;
+use CdekSDK2\BaseTypes\OrdersList;
+
+$invoice = Invoice::create([
+    'orders' => [
+        OrdersList::create([
+            'order_uuid' => 'uuid'
+        ]),
+    ],
+    'copy_count' => 1,
+]);
+
+$result = $cdek->invoice()->add($invoice);
+if ($result->hasErrors()) {
+    // Обрабатываем ошибки
+}
+
+if ($result->isOk()) {
+    //Запрос успешно выполнился
+    $response = $cdek->formatResponse($result, Invoice::class);
+    $response->entity->uuid;
+}
+```
+В результате данного запроса будет сформирована заявка на формирование накладной указанного заказа или заказов.
+
+
+### Получение информации о состоянии печатной формы накладной {: #invoice_get }
+
+```php
+
+$result = $cdek->invoice()->get($uuid);
+if ($result->hasErrors()) {
+    // Обрабатываем ошибки
+}
+
+if ($result->isOk()) {
+    //Запрос успешно выполнился
+    $response = $cdek->formatResponse($result, \CdekSDK2\BaseTypes\Invoice::class);
+    if (isset($response->entity->statuses)) {
+        foreach ($response->entity->statuses as $state) {
+            $state->code;
+        }
+    }
+}
+```
+Данный запрос отобразит все текущие статусы документа.
+
+
+### Скачивание печатной формы накладной {: #invoice_download }
+
+```php
+
+$result = $cdek->invoice()->download($uuid);
+if ($result->hasErrors()) {
+    // Обрабатываем ошибки
+}
+
+if ($result->isOk()) {
+    //Запрос успешно выполнился - сохраняем файл
+    file_put_contents('order.pdf', $result->getBody());
+}
+```
+Данный запрос получает содержимое PDF файла в виде строк байтов и необходимо эти данные сохранить в файл.
+
+
+### Создание запроса на формирование печатной формы ШК-места {: #barcodes_add }
+
+```php
+use CdekSDK2\BaseTypes\Barcode;
+use CdekSDK2\BaseTypes\OrdersList;
+
+$invoice = Barcode::create([
+    'orders' => [
+        OrdersList::create([
+            'order_uuid' => 'uuid'
+        ]),
+        OrdersList::create([
+            'cdek_number' => 1111000110
+        ]),
+    ],
+    'copy_count' => 1,
+]);
+
+$result = $cdek->barcodes()->add($invoice);
+if ($result->hasErrors()) {
+    // Обрабатываем ошибки
+}
+
+if ($result->isOk()) {
+    //Запрос успешно выполнился
+    $response = $cdek->formatResponse($result, Barcode::class);
+    $response->entity->uuid;
+}
+```
+В результате данного запроса будет сформирована заявка на формирование этикеток ШК-мест для указанных заказов.
+
+
+### Получение информации о состоянии печатной формы ШК-места {: #barcodes_get }
+
+```php
+
+$result = $cdek->barcodes()->get($uuid);
+if ($result->hasErrors()) {
+    // Обрабатываем ошибки
+}
+
+if ($result->isOk()) {
+    //Запрос успешно выполнился
+    $response = $cdek->formatResponse($result, \CdekSDK2\BaseTypes\Barcode::class);
+    if (isset($response->entity->statuses)) {
+        foreach ($response->entity->statuses as $state) {
+            $state->code;
+        }
+    }
+}
+```
+Данный запрос отобразит статусы ШК места 
+
+
+### Скачивание печатной формы ШК-места {: #barcodes_download }
+
+```php
+
+$result = $cdek->barcodes()->download($uuid);
+if ($result->hasErrors()) {
+    // Обрабатываем ошибки
+}
+
+if ($result->isOk()) {
+    //Запрос успешно выполнился - сохраняем файл
+    file_put_contents('barcodes.pdf', $result->getBody());
+}
+```
+Данный запрос получает содержимое PDF файла в виде строки байтов и необходимо эти данные сохранить в файл.
+
+
+### Подписка на вебхуки {: #webhooks_add }
+
+```php
+use CdekSDK2\BaseTypes\WebHook;
+
+$hook = WebHook::create([
+    'url' => 'https://url_in_your_site/webhooks',
+    'type' => CdekSDK2\Constants::HOOK_TYPE_STATUS
+]);
+
+$result = $cdek->webhooks()->add($hook);
+if ($result->hasErrors()) {
+    // Обрабатываем ошибки
+}
+
+if ($result->isOk()) {
+    //Запрос успешно выполнился
+    $response = $cdek->formatResponse($result, WebHook::class);
+    $response->entity->uuid;
+}
+```
+
+
+### Получение cписка городов {: #cities_getFiltered }
+
+```php
+$result = $cdek->cities()->getFiltered(['country_codes' => 'RU', 'city' => 'зеленогорск']);
+if ($result->isOk()) {
+    //Запрос успешно выполнился
+    $cities = $cdek->formatResponseList($result, \CdekSDK2\BaseTypes\CityList::class);
+    foreach($cities->items as $city) {
+        $city->city;
+        $city->code;
+        $city->fias_guid;
+    }
+}
+```
+В результате данного запроса будут отображены все населенные пункты в России с именем "Зеленогорск".
+
+Доступные фильтры описаны в константе `\CdekSDK2\Actions\LocationCities::FILTER` 
+
+
+### Получение cписка регионов {: #regions_getFiltered }
+
+```php
+$result = $cdek->regions()->getFiltered(['country_codes' => 'RU', 'size' => 2]);
+if ($result->isOk()) {
+    //Запрос успешно выполнился
+    $regions = $cdek->formatResponseList($result, \CdekSDK2\BaseTypes\RegionList::class);
+    foreach($regions->items as $region) {
+        $region->region;
+        $region->region_code;
+    }
+}
+```
+В результате данного запроса будет отображены два региона, которые находятся в России.
+
+Доступные фильтры описаны в константе `\CdekSDK2\Actions\LocationRegions::FILTER` 

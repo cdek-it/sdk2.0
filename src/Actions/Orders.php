@@ -22,7 +22,7 @@ class Orders extends ActionsWithDelete
      * URL для запросов к API
      * @var string
      */
-    const URL = '/orders';
+    public const URL = '/orders';
 
     /**
      * Создание заказа

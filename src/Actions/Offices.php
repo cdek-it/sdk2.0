@@ -9,50 +9,37 @@
 
 namespace CdekSDK2\Actions;
 
-use CdekSDK2\Constants;
-use CdekSDK2\Http\ApiResponse;
-
 /**
  * Class Offices
  * @package CdekSDK2\Actions
  */
 class Offices extends Action
 {
+    use FilteredTrait;
+
     /**
      * URL для запросов к API
      * @var string
      */
-    const URL = '/offices';
+    public const URL = '/deliverypoints';
 
     /**
-     * @param array $filter
-     * @return ApiResponse
-     * @throws \CdekSDK2\Exceptions\RequestException
+     * Список корректных параметров, которые разрешено передавать для поиска офисов
+     * @var array
      */
-    public function getFiltered(array $filter = []): ApiResponse
-    {
-        $add_params = '';
-        if (!empty($filter)) {
-            $filtered = [];
-            foreach ($filter as $k => $v) {
-                if (array_key_exists($k, Constants::OFFICE_FILTER)) {
-                    $filtered[$k] = $v;
-                }
-            }
-            $filter = array_replace(Constants::OFFICE_FILTER, $filtered);
-            $add_params = empty($filter) ? '' : http_build_query($filter);
-        }
-        return $this->get($add_params);
-    }
-
-    /**
-     * Переиспользуем стандартный метод
-     * @param string $filter
-     * @return ApiResponse
-     * @throws \CdekSDK2\Exceptions\RequestException
-     */
-    public function get(string $filter = ''): ApiResponse
-    {
-        return $this->http_client->get(self::URL . '?' . $filter);
-    }
+    public const FILTER = [
+        'postal_code' => '',
+        'city_code' => '',
+        'type' => '',
+        'country_code' => '',
+        'region_code' => '',
+        'have_cashless' => '',
+        'have_cash' => '',
+        'allowed_cod' => '',
+        'is_dressing_room' => '',
+        'weight_max' => '',
+        'weight_min' => '',
+        'lang' => '',
+        'take_only' => '',
+    ];
 }

@@ -17,4 +17,18 @@ class LocationRegions extends Action
      * @var string
      */
     public const URL = '/location/regions';
+
+    /**
+     * Список корректных параметров, которые разрешено передавать для поиска регионов
+     * @var array
+     */
+    public const FILTER = [
+        'country_codes' => '',
+        'region_code' => '',
+        'kladr_region_code' => '',
+        'fias_region_guid' => '',
+        'size' => '',
+        'page' => '',
+        'lang' => '',
+    ];
 }

@@ -9,12 +9,19 @@
 
 namespace CdekSDK2;
 
+use CdekSDK2\Actions\Barcodes;
 use CdekSDK2\Actions\Intakes;
+use CdekSDK2\Actions\Invoices;
 use CdekSDK2\Actions\LocationCities;
 use CdekSDK2\Actions\LocationRegions;
 use CdekSDK2\Actions\Offices;
 use CdekSDK2\Actions\Orders;
 use CdekSDK2\Actions\Webhooks;
+use CdekSDK2\BaseTypes\CityList;
+use CdekSDK2\BaseTypes\PickupPointList;
+use CdekSDK2\BaseTypes\RegionList;
+use CdekSDK2\BaseTypes\Response;
+use CdekSDK2\BaseTypes\WebHookList;
 use CdekSDK2\Exceptions\AuthException;
 use CdekSDK2\Exceptions\ParsingException;
 use CdekSDK2\Http\Api;
@@ -61,6 +68,16 @@ class Client
      * @var Offices
      */
     private $offices;
+
+    /**
+     * @var Barcodes
+     */
+    private $barcodes;
+
+    /**
+     * @var Invoices
+     */
+    private $invoices;
 
     /**
      * @var LocationRegions
@@ -178,6 +195,16 @@ class Client
     }
 
     /**
+     * @param int $timestamp
+     * @return self
+     */
+    public function setExpire(int $timestamp): self
+    {
+        $this->http_client->setExpire($timestamp);
+        return $this;
+    }
+
+    /**
      * Авторизация клиента в сервисе Интеграции
      * @return bool
      * @throws AuthException
@@ -255,18 +282,64 @@ class Client
     }
 
     /**
+     * @return Invoices
+     */
+    public function invoice(): Invoices
+    {
+        if ($this->invoices === null) {
+            $this->invoices = new Invoices($this->http_client, $this->serializer);
+        }
+        return $this->invoices;
+    }
+
+    /**
+     * @return Barcodes
+     */
+    public function barcodes(): Barcodes
+    {
+        if ($this->barcodes === null) {
+            $this->barcodes = new Barcodes($this->http_client, $this->serializer);
+        }
+        return $this->barcodes;
+    }
+
+    /**
      * @param ApiResponse $response
      * @param string $className
-     * @return mixed
+     * @return Response
      * @throws \Exception
      */
-    public function formatResponse(ApiResponse $response, string $className)
+    public function formatResponse(ApiResponse $response, string $className): Response
     {
         if (class_exists($className)) {
-            $result = $this->serializer->deserialize($response->getBody(), $className, 'json');
+            /* @var $result Response */
+            $result = $this->serializer->deserialize($response->getBody(), Response::class, 'json');
+            $result->entity = null;
+
+            $array_response = json_decode($response->getBody(), true);
+            $entity = $this->serializer->deserialize(json_encode($array_response['entity']), $className, 'json');
+            $result->entity = $entity;
+
             return $result;
-        } else {
-            throw new ParsingException('Class ' . $className . ' not found');
         }
+
+        throw new ParsingException('Class ' . $className . ' not found');
+    }
+
+    /**
+     * @param ApiResponse $response
+     * @param string $className
+     * @return CityList|RegionList|PickupPointList|WebHookList
+     * @throws \Exception
+     */
+    public function formatResponseList(ApiResponse $response, string $className)
+    {
+        if (class_exists($className)) {
+            $body = '{"items":' . $response->getBody() . '}';
+            $result = $this->serializer->deserialize($body, $className, 'json');
+            return $result;
+        }
+
+        throw new ParsingException('Class ' . $className . ' not found');
     }
 }

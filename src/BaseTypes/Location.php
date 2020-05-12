@@ -95,6 +95,13 @@ class Location extends Base
      */
     public $address;
 
+    /**
+     * Полный адрес с указанием страны, региона, города, и т.д.
+     * @Type("string")
+     * @var string
+     */
+    public $address_full;
+
 
     /**
      * Location constructor.
@@ -105,16 +112,11 @@ class Location extends Base
         parent::__construct($param);
         $this->rules = [
             'address' => 'required',
-
             'code' => 'numeric',
-
             'fias_guid' => 'alpha',
-
             'postal_code' => 'alpha',
-
             'longitude' => 'numeric',
             'latitude' => 'numeric',
-
             'country_code' => 'alpha:2',
             'region' => 'alpha',
             'sub_region' => 'alpha',

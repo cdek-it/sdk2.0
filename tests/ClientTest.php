@@ -13,12 +13,10 @@ use CdekSDK2\Actions\Intakes;
 use CdekSDK2\Actions\Offices;
 use CdekSDK2\Actions\Orders;
 use CdekSDK2\Actions\Webhooks;
-use CdekSDK2\BaseTypes\Intake;
-use CdekSDK2\BaseTypes\Order;
-use CdekSDK2\BaseTypes\WebHook;
+use CdekSDK2\BaseTypes\Invoice;
+use CdekSDK2\BaseTypes\RegionList;
 use CdekSDK2\Client;
 use CdekSDK2\Exceptions\ParsingException;
-use CdekSDK2\Http\Api;
 use CdekSDK2\Http\ApiResponse;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\Psr18Client;
@@ -96,6 +94,12 @@ class ClientTest extends TestCase
         $this->assertStringContainsString('qwerty', $this->client->getToken());
     }
 
+    public function testSetExpire()
+    {
+        $this->client->setExpire(1);
+        $this->assertStringContainsString(1, $this->client->getExpire());
+    }
+
 
     public function testIsExpired()
     {
@@ -131,9 +135,12 @@ class ClientTest extends TestCase
     {
         $response = $this->createMock(ApiResponse::class);
         $response->method('getBody')
-            ->willReturn('{"type":"ORDER_STATUS","uuid":"c7e28f79fe39","url":"my_url"}');
-        $hook = $this->client->formatResponse($response, WebHook::class);
-        $this->assertInstanceOf(WebHook::class, $hook);
+            ->willReturn('{"entity":{"uuid":"8bf0e8e2d724","orders":[{"order_uuid":"61a552583eb3"}],"copy_count":1,'
+        . '"url":"","statuses":[{"code":"ACCEPTED","name":"Принят","date_time":"2020-02-11T17:52:45+0700"},'
+        . '{"code":"PROCESSING","name":"Формируется","date_time":"2020-02-11T17:52:45+0700"}]},'
+        . '"requests":[{"errors":[],"warnings":[]}]}');
+        $invoice_response = $this->client->formatResponse($response, Invoice::class);
+        $this->assertInstanceOf(Invoice::class, $invoice_response->entity);
     }
 
     public function testFormatResponseException()
@@ -143,5 +150,23 @@ class ClientTest extends TestCase
         $response->method('getBody')
             ->willReturn('{"type":"ORDER_STATUS","uuid":"c7e28f79fe39","url":"my_url"}');
         $hook = $this->client->formatResponse($response, 'SomeNotFoundClass');
+    }
+
+    public function testFormatResponseList()
+    {
+        $response = $this->createMock(ApiResponse::class);
+        $response->method('getBody')
+            ->willReturn('[{"country_code":"DE","region":"Нижняя Саксония","region_code":"641","country":"Германия"}]');
+        $region_list = $this->client->formatResponseList($response, RegionList::class);
+        $this->assertInstanceOf(RegionList::class, $region_list);
+    }
+
+    public function testFormatResponseListException()
+    {
+        $this->expectException(ParsingException::class);
+        $response = $this->createMock(ApiResponse::class);
+        $response->method('getBody')
+            ->willReturn('[{"country_code":"DE","region":"Нижняя Саксония","region_code":"641","country":"Германия"}]');
+        $hook = $this->client->formatResponseList($response, 'AnotherClass');
     }
 }

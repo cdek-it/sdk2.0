@@ -19,6 +19,10 @@
 - создание заявки на вызов курьера
 - информация о заявке на вызов курьера
 - удаление заявки на вызов курьера
+- создание запроса на формирование печатной формы накладной
+- создание запроса на формирование печатной формы ШК-места
+- получение cписка городов
+- получение cписка регионов
 
 Работа со всеми методами API возможна только при наличии доступов к сервису интеграции, которые выдаются только при наличии договора с компанией СДЭК. 
 
@@ -56,7 +60,7 @@ $cdek->setAccount('account');
 $cdek->setSecure('secure');
 
 // создание заказа
-$order = Order::create([...]);
+$order = \CdekSDK2\BaseTypes\Order::create([...]);
 $res = $cdek->orders()->add($order);
 
 if ($res->hasErrors()) {
@@ -66,15 +70,24 @@ if ($res->hasErrors()) {
     }
 }
 if ($res->isOk()) {
-    $cdek_order = $cdek->formatResponse($res, Order::class);
-    //$cdek_order->uuid;
+    $cdek_order = $cdek->formatResponse($res, \CdekSDK2\BaseTypes\Order::class);
+//    $cdek_order->entity->uuid;
 }
 
-//получить список офисов
-$res = $cdek->offices()->getFiltered(['countryiso' => 'kz']);
+// получение информации о заказе
+$res = $cdek->orders()->get($cdek_order->entity->uuid);
 if ($res->isOk()) {
-    $pvzlist = $cdek->formatResponse($res, \CdekSDK2\BaseTypes\PickupPointList::class)
-    //$pvzlist->getCount();
+    $cdek_order = $cdek->formatResponse($res, \CdekSDK2\BaseTypes\Order::class);
+}
+
+
+
+
+//получить список офисов
+$res = $cdek->offices()->getFiltered(['country_code' => 'kz']);
+if ($res->isOk()) {
+    $pvzlist = $cdek->formatResponseList($res, \CdekSDK2\BaseTypes\PickupPointList::class);
+//    $pvzlist->items;
 }
 ```
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CdekSDK2\Actions;
 
-use CdekSDK2\Constants;
 use CdekSDK2\Http\ApiResponse;
 
 trait FilteredTrait
@@ -15,18 +14,29 @@ trait FilteredTrait
      */
     public function getFiltered(array $filter = []): ApiResponse
     {
-        $add_params = '';
-        if (!empty($filter)) {
-            $filtered = [];
-            foreach ($filter as $k => $v) {
-                if (array_key_exists($k, Constants::OFFICE_FILTER)) {
-                    $filtered[$k] = $v;
-                }
-            }
-            $filter = array_replace(Constants::OFFICE_FILTER, $filtered);
-            $add_params = empty($filter) ? '' : http_build_query($filter);
-        }
+        $add_params = $this->parseFilter($filter);
         return $this->get($add_params);
+    }
+
+    /**
+     * @param  array  $filter
+     * @return string
+     */
+    private function parseFilter(array $filter = []): string
+    {
+        $add_params = '';
+        if (empty($filter)) {
+            return $add_params;
+        }
+
+        $filtered = [];
+        foreach ($filter as $k => $v) {
+            if (array_key_exists($k, self::FILTER)) {
+                $filtered[$k] = $v;
+            }
+        }
+        $add_params = http_build_query($filtered);
+        return $add_params;
     }
 
     /**

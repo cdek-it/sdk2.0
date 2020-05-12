@@ -15,7 +15,7 @@ use JMS\Serializer\Annotation\Type;
  * Class WorkTime
  * @package CdekSDK2\BaseTypes
  */
-class WorkTime extends Base
+class WorkTime
 {
     /**
      * Порядковый номер дня начиная с единицы. Понедельник = 1, воскресенье = 7.
@@ -29,5 +29,5 @@ class WorkTime extends Base
      * @Type("string")
      * @var string
      */
-    private $periods;
+    private $time;
 }

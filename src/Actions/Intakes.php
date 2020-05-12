@@ -22,7 +22,7 @@ class Intakes extends ActionsWithDelete
      * URL для запросов к API
      * @var string
      */
-    const URL = '/intakes';
+    public const URL = '/intakes';
 
     /**
      * Создание вызова курьера

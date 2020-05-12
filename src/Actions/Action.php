@@ -24,7 +24,7 @@ class Action
      * URL для запросов к API
      * @var string
      */
-    const URL = '';
+    public const URL = '';
 
     /**
      * Объект для взаимодействия с API СДЭК
@@ -56,8 +56,7 @@ class Action
      */
     public function get(string $uuid): ApiResponse
     {
-        $response = $this->http_client->get($this->slug($uuid));
-        return $response;
+        return $this->http_client->get($this->slug($uuid));
     }
 
     /**
@@ -68,8 +67,7 @@ class Action
      */
     protected function preparedAdd(array $params = []): ApiResponse
     {
-        $response = $this->http_client->post($this->slug(), $params);
-        return $response;
+        return $this->http_client->post($this->slug(), $params);
     }
 
     /**

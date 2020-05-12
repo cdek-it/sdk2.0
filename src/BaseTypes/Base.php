@@ -32,7 +32,7 @@ class Base
      * @Type("array")
      * @var array
      */
-    protected $errors = [];
+    protected $validationErrors = [];
 
     /**
      * Base конструктор
@@ -58,7 +58,7 @@ class Base
         $validation = $validator->validate(get_object_vars($this), $this->rules);
 
         if ($validation->fails()) {
-            $this->errors[] = $validation->errors()->all();
+            $this->validationErrors[] = $validation->errors()->all();
         }
         return $validation->passes();
     }

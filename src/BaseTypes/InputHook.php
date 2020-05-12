@@ -15,7 +15,7 @@ use JMS\Serializer\Annotation\Type;
  * Class InputHook
  * @package CdekSDK2\BaseTypes
  */
-class InputHook extends Base
+class InputHook
 {
     /**
      * Тип события

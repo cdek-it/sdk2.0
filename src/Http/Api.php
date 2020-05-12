@@ -180,6 +180,14 @@ class Api
     }
 
     /**
+     * @param int $timestamp
+     */
+    public function setExpire(int $timestamp)
+    {
+        $this->expire = $timestamp;
+    }
+
+    /**
      * @param string $url
      * @param array $params
      * @return ApiResponse

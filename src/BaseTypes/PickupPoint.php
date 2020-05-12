@@ -15,7 +15,7 @@ use JMS\Serializer\Annotation\Type;
  * Class PickupPoint
  * @package CdekSDK2\BaseTypes
  */
-class PickupPoint extends Base
+class PickupPoint
 {
     /**
      * Код ПВЗ
@@ -25,13 +25,6 @@ class PickupPoint extends Base
     public $code;
 
     /**
-     * Почтовый индекс
-     * @Type("string")
-     * @var string
-     */
-    public $postalCode;
-
-    /**
      * Название ПВЗ
      * @Type("string")
      * @var string
@@ -39,74 +32,18 @@ class PickupPoint extends Base
     public $name;
 
     /**
-     * Код страны в формате ISO_3166-1_alpha-2
-     * @Type("string")
-     * @var string
+     * Почтовый индекс
+     * @Type("array<CdekSDK2\BaseTypes\Location>")
+     * @var Location
      */
-    public $countryCodeIso;
-
-    /**
-     * Название страны
-     * @Type("string")
-     * @var string
-     */
-    public $countryName;
-
-    /**
-     * Код региона
-     * @Type("integer")
-     * @var integer
-     */
-    public $regionCode;
-
-    /**
-     * Название региона
-     * @Type("string")
-     * @var string
-     */
-    public $regionName;
-
-    /**
-     * Код города по базе СДЭК
-     * @Type("integer")
-     * @var integer
-     */
-    public $cityCode;
-
-    /**
-     * Название города
-     * @Type("string")
-     * @var string
-     */
-    public $city;
+    public $location;
 
     /**
      * Режим работы, строка вида «пн-пт 9-18, сб 9-16»
      * @Type("string")
      * @var string
      */
-    public $workTime;
-
-    /**
-     * Адрес (улица, дом, офис) в указанном городе
-     * @Type("string")
-     * @var string
-     */
-    public $address;
-
-    /**
-     * Полный адрес с указанием страны, региона, города, и т.д.
-     * @Type("string")
-     * @var string
-     */
-    public $fullAddress;
-
-    /**
-     * Телефон
-     * @Type("string")
-     * @var string
-     */
-    public $phone;
+    public $work_time;
 
     /**
      * Примечание по ПВЗ
@@ -116,18 +53,18 @@ class PickupPoint extends Base
     public $note;
 
     /**
-     * Координаты местоположения (долгота) в градусах
+     * Минимальный вес (в кг.), принимаемый в ПВЗ (> WeightMin)
      * @Type("float")
      * @var float
      */
-    public $coordX;
+    public $weight_min;
 
     /**
-     * Координаты местоположения (широта) в градусах
+     * Максимальный вес (в кг.), принимаемый в ПВЗ (<=WeightMax)
      * @Type("float")
      * @var float
      */
-    public $coordY;
+    public $weight_max;
 
     /**
      * Тип ПВЗ: Склад СДЭК или Почтомат партнера, PVZ — склад СДЭК, POSTOMAT — почтомат партнера СДЭК
@@ -141,42 +78,56 @@ class PickupPoint extends Base
      * @Type("string")
      * @var string
      */
-    public $ownerCode;
+    public $owner_code;
+
+    /**
+     * Является ли ПВЗ только пунктом выдачи или также осуществляет приём грузов
+     * @Type("boolean")
+     * @var boolean
+     */
+    public $take_only;
 
     /**
      * Есть ли примерочная
      * @Type("boolean")
      * @var boolean
      */
-    public $isDressingRoom;
+    public $is_dressing_room;
 
     /**
      * Есть терминал оплаты
      * @Type("boolean")
      * @var boolean
      */
-    public $haveCashless;
+    public $have_cashless;
+
+    /**
+     * Есть приём наличных
+     * @Type("boolean")
+     * @var boolean
+     */
+    public $have_cash;
 
     /**
      * Разрешен наложенный платеж в ПВЗ
      * @Type("boolean")
      * @var boolean
      */
-    public $allowedCod;
+    public $allowed_cod;
 
     /**
      * Ближайшая станция/остановка транспорта
      * @Type("string")
      * @var string
      */
-    public $nearestStation;
+    public $nearest_station;
 
     /**
      * Ближайшая станция метро
      * @Type("string")
      * @var string
      */
-    public $metroStation;
+    public $nearest_metro_station;
 
     /**
      * Ссылка на данный ПВЗ на сайте СДЭК
@@ -197,25 +148,33 @@ class PickupPoint extends Base
      * @Type("string")
      * @var string
      */
-    public $addressComment;
+    public $address_comment;
 
     /**
      * Все фото офиса
-     * @Type("string")
-     * @var string
+     * @Type("array<CdekSDK2\BaseTypes\PickupImage>")
+     * @var PickupImage[]
      */
-    public $officeImageList;
+    public $office_image_list;
 
     /**
      * График работы на неделю
      * @Type("array<CdekSDK2\BaseTypes\WorkTime>")
      * @var WorkTime[]
      */
-    public $workTimeYList;
+    public $work_time_list;
 
     /**
+     * Исключения в графике работы офиса
+     * @Type("array<CdekSDK2\BaseTypes\WorkTimeExceptions>")
+     * @var WorkTimeExceptions[]
+     */
+    public $work_time_exceptions;
+
+    /**
+     * Список телефонов
      * @Type("array<CdekSDK2\BaseTypes\Phone>")
      * @var Phone[]
      */
-    public $phoneDetailList = [];
+    public $phones = [];
 }
