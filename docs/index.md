@@ -71,7 +71,6 @@ $cdek->setTest(true);
 >***И список методов, которые в разработке:***
 > - Изменение заказа
 > - Отображение информации о возвратах
-> - Вебхуки печатных форм
 
 Документация по API 2.0 сервиса интеграции доступна по [ссылке](https://confluence.cdek.ru/pages/viewpage.action?pageId=29923741)
 
@@ -273,7 +272,13 @@ use CdekSDK2\BaseTypes\WebHook;
 
 $hook = WebHook::create([
     'url' => 'https://url_in_your_site/webhooks',
-    'type' => CdekSDK2\Constants::HOOK_TYPE_STATUS
+    'type' => \CdekSDK2\Constants::HOOK_TYPE_STATUS
+]);
+
+//или для получения хука о готовности печатной формы
+$print_hook = WebHook::create([
+    'url' => 'https://url_in_your_site/webhooks_for_print',
+    'type' => \CdekSDK2\Constants::HOOK_PRINT_STATUS
 ]);
 
 $result = $cdek->webhooks()->add($hook);
@@ -320,6 +325,9 @@ if ($result->isOk()) {
     $response->items;
 }
 ```
+В результате запроса будут отображены все вебхуки, на которые оформлены подписки,
+как для вебхуков по статусам, так и для вебхуков для печатных форм.
+
 
 ### Удаление подписки на вебхуки {: #webhooks_delete }
 
@@ -341,12 +349,31 @@ if ($result->isOk()) {
 
 ```php
 $cdek = new \CdekSDK2\Client();
-$input_hook = $cdek->webhooks()->parse($data);
-// и можно получать информацию о статусах заказа
+$input_hook = $cdek->webhooks()->parse($hook);
+
+// получаем идентификатор сущности
 $input_hook->uuid;
-$input_hook->attributes->cdek_number;
-$input_hook->attributes->reason_code;
+if ($input_hook->type === \CdekSDK2\Constants::HOOK_TYPE_STATUS) {
+    // и можно получать информацию о статусах заказа
+    $input_hook->attributes->cdek_number;
+    $input_hook->attributes->status_code;
+}
+if ($input_hook->type === \CdekSDK2\Constants::HOOK_PRINT_STATUS) {
+    // и можно получать ссылку на PDF файл и скачать его
+    $input_hook->attributes->url;
+    $input_hook->attributes->type;
+    if ($input_hook->attributes->type === \CdekSDK2\Constants::PRINT_TYPE_INVOICE) {
+        $cdek->invoice()->download($input_hook->uuid);
+    } else {
+        $cdek->barcodes()->download($input_hook->uuid);
+    }
+}
 ```
+Добавлены новые вебхуки - о готовности печатных форм, новый тип добавлен в константы `Constants::HOOK_PRINT_STATUS`. 
+
+Теперь обрабатывать вебхуки стало проще, один из вариантов указан выше.
+
+Также добавлены константы для типов печатных форм `Constants::PRINT_TYPE_INVOICE` и `Constants::PRINT_TYPE_BARCODE`.
 
 ### Создание заявки на вызов курьера {: #intakes_add }
 

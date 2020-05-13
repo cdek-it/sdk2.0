@@ -7,7 +7,7 @@
  * @author Chizhekov Viktor
  */
 
-namespace Tests\CdekSDK2;
+namespace CdekSDK2\Tests;
 
 use CdekSDK2\Actions\Intakes;
 use CdekSDK2\Actions\Offices;

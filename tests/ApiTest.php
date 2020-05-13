@@ -7,10 +7,11 @@
  * @author Chizhekov Viktor
  */
 
-namespace CdekSDK2\Http;
+namespace CdekSDK2\Tests;
 
 use CdekSDK2\Constants;
 use CdekSDK2\Exceptions\AuthException;
+use CdekSDK2\Http\Api;
 use Http\Mock\Client;
 use Nyholm\Psr7\Response;
 use PHPUnit\Framework\TestCase;

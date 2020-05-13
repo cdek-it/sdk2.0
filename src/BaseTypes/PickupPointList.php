@@ -42,7 +42,7 @@ class PickupPointList
         /* @var PickupPoint $pvz */
         foreach ($this->items as $pvz) {
             foreach ($filter as $k => $v) {
-                if (property_exists(self::class, $k) && mb_strtolower($pvz->$k) === mb_strtolower($v)) {
+                if (property_exists(PickupPoint::class, $k) && mb_strtolower($pvz->$k) === mb_strtolower($v)) {
                     $filtered[] = $pvz;
                     break;
                 }

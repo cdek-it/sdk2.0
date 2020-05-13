@@ -7,7 +7,7 @@
  * @author Chizhekov Viktor
  */
 
-namespace Tests\CdekSDK2\Actions;
+namespace CdekSDK2\Tests\Actions;
 
 use CdekSDK2\Actions\Orders;
 use CdekSDK2\BaseTypes\Order;

@@ -16,16 +16,34 @@ namespace CdekSDK2;
 class Constants
 {
     /**
-     * Хук: статусы.
+     * Хук: статусы
      * @var string
      */
     public const HOOK_TYPE_STATUS = 'ORDER_STATUS';
+
+    /**
+     * Хук: печатные формы
+     * @var string
+     */
+    const HOOK_PRINT_STATUS = 'PRINT_FORM';
 
     /**
      * Хук: задел на будущее
      * @var string
      */
     public const HOOK_TYPE_OTHER = 'ANYTHING_OTHER';
+
+    /**
+     * Печатная форма - штрих коды для упаковки
+     * @var string
+     */
+    public const PRINT_TYPE_BARCODE = 'barcode';
+
+    /**
+     * Печатная форма - накладная для заказа
+     * @var string
+     */
+    public const PRINT_TYPE_INVOICE = 'receipt';
 
     /**
      * Ошибка авторизации

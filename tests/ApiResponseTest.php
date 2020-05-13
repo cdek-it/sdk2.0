@@ -7,8 +7,9 @@
  * @author Chizhekov Viktor
  */
 
-namespace CdekSDK2\Http;
+namespace CdekSDK2\Tests;
 
+use CdekSDK2\Http\ApiResponse;
 use Nyholm\Psr7\Response;
 
 class ApiResponseTest extends \PHPUnit\Framework\TestCase

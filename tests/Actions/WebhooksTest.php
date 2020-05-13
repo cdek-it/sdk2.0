@@ -7,7 +7,7 @@
  * @author Chizhekov Viktor
  */
 
-namespace Tests\CdekSDK2\Actions;
+namespace CdekSDK2\Tests\Actions;
 
 use CdekSDK2\Actions\Webhooks;
 use CdekSDK2\BaseTypes\InputHook;
@@ -43,13 +43,40 @@ class WebhooksTest extends TestCase
         $this->webhooks = null;
     }
 
-    public function testParseHook()
+    public function testParseHookStatus()
     {
-        $hook = $this->webhooks->parse('{"type":"ORDER_STATUS","date_time":"2019-10-04T11:16:26+0700",' .
-            '"uuid":"7275","attributes":{"cdek_number":"2083","status_code":"1",' .
-            '"number":"7275","status_date_time":"2019-10-04T11:16:21+0700"}}');
+        $input_hook = '{
+  "type": "ORDER_STATUS",
+  "date_time": "2019-07-11T13:07:34+0700",
+  "uuid": "72753031-8347-40c0-ab0f-1a49c7a262c1",
+  "attributes": {
+    "cdek_number": "1106153417",
+    "number": "1106152821",
+    "status_code": "4",
+    "status_date_time": "2019-07-11T12:41:43+0700",
+    "city": "Новосибирск"
+  }
+}';
+        $hook = $this->webhooks->parse($input_hook);
         $this->assertInstanceOf(InputHook::class, $hook);
         $this->assertStringContainsString(Constants::HOOK_TYPE_STATUS, $hook->type);
+    }
+
+    public function testParseHookPrint()
+    {
+        $input_hook = '{
+  "type": "PRINT_FORM",
+  "date_time": "2019-07-11T13:07:34+0700",
+  "uuid": "72753031-8347-40c0-ab0f-1a49c7a262c1",
+  "attributes": {
+    "type": "barcode",
+    "url": "https://api.cdek.ru/v2/print/barcodes/{uuid}.pdf"
+  }
+}';
+        $hook = $this->webhooks->parse($input_hook);
+        $this->assertInstanceOf(InputHook::class, $hook);
+        $this->assertStringContainsString(Constants::HOOK_PRINT_STATUS, $hook->type);
+        $this->assertStringContainsString(Constants::PRINT_TYPE_BARCODE, $hook->attributes->type);
     }
 
     public function testParseHookFailData()

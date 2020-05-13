@@ -40,8 +40,8 @@ class InputHook
 
     /**
      * Атрибуты события
-     * @Type("CdekSDK2\BaseTypes\Statuses")
-     * @var Statuses
+     * @Type("CdekSDK2\BaseTypes\Attributes")
+     * @var Attributes
      */
     public $attributes;
 }

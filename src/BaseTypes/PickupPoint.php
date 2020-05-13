@@ -32,8 +32,8 @@ class PickupPoint
     public $name;
 
     /**
-     * Почтовый индекс
-     * @Type("array<CdekSDK2\BaseTypes\Location>")
+     * Адрес ПВЗ
+     * @Type("CdekSDK2\BaseTypes\Location")
      * @var Location
      */
     public $location;

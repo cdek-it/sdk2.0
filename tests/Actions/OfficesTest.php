@@ -7,7 +7,7 @@
  * @author Chizhekov Viktor
  */
 
-namespace Tests\CdekSDK2\Actions;
+namespace CdekSDK2\Tests\Actions;
 
 use CdekSDK2\Actions\Offices;
 use CdekSDK2\BaseTypes\PickupPointList;
@@ -55,14 +55,14 @@ class OfficesTest extends TestCase
         $client->setTest(true);
         $this->offices = $client->offices();
 
-        $response = $this->offices->getFiltered(['countryiso' => 'AE']);
+        $response = $this->offices->getFiltered(['country_code' => 'AE']);
         $this->assertInstanceOf(ApiResponse::class, $response);
 
-//        /* @var PickupPointList $pickup_list */
-//        $pickup_list = $client->formatResponse($response, PickupPointList::class);
-//        $this->assertEquals(1, $pickup_list->getCount());
-//
-//        $this->assertCount(1, $pickup_list->filter(['countryCodeIso' => 'AE']));
+        /* @var PickupPointList $pickup_list */
+        $pickup_list = $client->formatResponseList($response, PickupPointList::class);
+        $this->assertEquals(1, $pickup_list->getCount());
+
+        $this->assertCount(1, $pickup_list->filter(['type' => 'PVZ']));
     }
 
     public function testParseFilter()
