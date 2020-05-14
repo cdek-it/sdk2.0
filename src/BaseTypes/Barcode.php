@@ -1,14 +1,10 @@
 <?php
 
-/**
- * Copyright (c) 2019. CDEK-IT. All rights reserved.
- * See LICENSE.md for license details.
- *
- * @author Chizhekov Viktor
- */
+declare(strict_types=1);
 
 namespace CdekSDK2\BaseTypes;
 
+use CdekSDK2\Dto\ResponseStatus;
 use JMS\Serializer\Annotation\Type;
 
 class Barcode extends Base
@@ -30,8 +26,8 @@ class Barcode extends Base
 
     /**
      * Число копий. По умолчанию 1
-     * @Type("integer")
-     * @var integer
+     * @Type("int")
+     * @var int
      */
     public $copy_count = 1;
 
@@ -51,7 +47,7 @@ class Barcode extends Base
 
     /**
      * Список статусов запроса
-     * @Type("array<CdekSDK2\BaseTypes\ResponseStatus>")
+     * @Type("array<CdekSDK2\Dto\ResponseStatus>")
      * @var ResponseStatus[]
      */
     public $statuses;

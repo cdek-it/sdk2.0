@@ -1,19 +1,19 @@
 <?php
 
-/**
- * Copyright (c) 2020. CDEK-IT. All rights reserved.
- * See LICENSE.md for license details.
- *
- * @author Chizhekov Viktor
- */
+declare(strict_types=1);
 
-namespace CdekSDK2\BaseTypes;
+namespace CdekSDK2\Dto;
 
+use CdekSDK2\BaseTypes\Barcode;
+use CdekSDK2\BaseTypes\Intake;
+use CdekSDK2\BaseTypes\Invoice;
+use CdekSDK2\BaseTypes\Order;
+use CdekSDK2\BaseTypes\WebHook;
 use JMS\Serializer\Annotation\Type;
 
 /**
  * Class Response
- * @package CdekSDK2\BaseTypes
+ * @package CdekSDK2\Dto
  */
 class Response
 {
@@ -24,7 +24,7 @@ class Response
     public $entity;
 
     /**
-     * @Type("array<CdekSDK2\BaseTypes\Request>")
+     * @Type("array<CdekSDK2\Dto\Request>")
      * @var Request[]
      */
     public $requests;

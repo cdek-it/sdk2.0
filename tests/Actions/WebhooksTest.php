@@ -10,7 +10,7 @@
 namespace CdekSDK2\Tests\Actions;
 
 use CdekSDK2\Actions\Webhooks;
-use CdekSDK2\BaseTypes\InputHook;
+use CdekSDK2\Dto\InputHook;
 use CdekSDK2\BaseTypes\WebHook;
 use CdekSDK2\Client;
 use CdekSDK2\Constants;

@@ -1,6 +1,8 @@
 <?php
 
-namespace CdekSDK2\BaseTypes;
+declare(strict_types=1);
+
+namespace CdekSDK2\Dto;
 
 use JMS\Serializer\Annotation\Type;
 
@@ -11,19 +13,19 @@ class WorkTimeExceptions
      * @Type("string")
      * @var string
      */
-    private $date;
+    public $date;
 
     /**
      * Период работы в указанную дату. Если в этот день не работают, то не отображается.
      * @Type("string")
      * @var string
      */
-    private $time;
+    public $time;
 
     /**
      * Признак рабочего/нерабочего дня в указанную дату
-     * @Type("boolean")
-     * @var boolean
+     * @Type("bool")
+     * @var bool
      */
-    private $is_working;
+    public $is_working;
 }

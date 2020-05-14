@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Copyright (c) 2019. CDEK-IT. All rights reserved.
- * See LICENSE.md for license details.
- *
- * @author Chizhekov Viktor
- */
+declare(strict_types=1);
 
 namespace CdekSDK2;
 
@@ -25,7 +20,7 @@ class Constants
      * Хук: печатные формы
      * @var string
      */
-    const HOOK_PRINT_STATUS = 'PRINT_FORM';
+    public const HOOK_PRINT_STATUS = 'PRINT_FORM';
 
     /**
      * Хук: задел на будущее
@@ -263,7 +258,7 @@ class Constants
 
     /**
      * Настройки таймаута для запросов
-     * @var integer
+     * @var int
      */
     public const CONNECTION_TIMEOUT = 10;
 

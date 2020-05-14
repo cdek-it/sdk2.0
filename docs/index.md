@@ -454,7 +454,7 @@ if ($result->isOk()) {
 $result = $cdek->offices()->get();
 if ($result->isOk()) {
     //Запрос успешно выполнился
-    $pvzlist = $cdek->formatResponseList($result, \CdekSDK2\BaseTypes\PickupPointList::class);
+    $pvzlist = $cdek->formatResponseList($result, \CdekSDK2\Dto\PickupPointList::class);
     foreach($pvzlist->items as $pvz) {
         $pvz->code;
         $pvz->location->address;
@@ -472,7 +472,7 @@ if ($result->isOk()) {
 $result = $cdek->offices()->getFiltered(['country_code' => 'kz']);
 if ($result->isOk()) {
     //Запрос успешно выполнился
-    $pvzlist = $cdek->formatResponseList($result, \CdekSDK2\BaseTypes\PickupPointList::class);
+    $pvzlist = $cdek->formatResponseList($result, \CdekSDK2\Dto\PickupPointList::class);
     foreach($pvzlist->items as $pvz) {
         $pvz->code;
         $pvz->location->address;
@@ -652,7 +652,7 @@ if ($result->isOk()) {
 $result = $cdek->cities()->getFiltered(['country_codes' => 'RU', 'city' => 'зеленогорск']);
 if ($result->isOk()) {
     //Запрос успешно выполнился
-    $cities = $cdek->formatResponseList($result, \CdekSDK2\BaseTypes\CityList::class);
+    $cities = $cdek->formatResponseList($result, \CdekSDK2\Dto\CityList::class);
     foreach($cities->items as $city) {
         $city->city;
         $city->code;
@@ -671,7 +671,7 @@ if ($result->isOk()) {
 $result = $cdek->regions()->getFiltered(['country_codes' => 'RU', 'size' => 2]);
 if ($result->isOk()) {
     //Запрос успешно выполнился
-    $regions = $cdek->formatResponseList($result, \CdekSDK2\BaseTypes\RegionList::class);
+    $regions = $cdek->formatResponseList($result, \CdekSDK2\Dto\RegionList::class);
     foreach($regions->items as $region) {
         $region->region;
         $region->region_code;

@@ -86,7 +86,7 @@ if ($res->isOk()) {
 //получить список офисов
 $res = $cdek->offices()->getFiltered(['country_code' => 'kz']);
 if ($res->isOk()) {
-    $pvzlist = $cdek->formatResponseList($res, \CdekSDK2\BaseTypes\PickupPointList::class);
+    $pvzlist = $cdek->formatResponseList($res, \CdekSDK2\Dto\PickupPointList::class);
 //    $pvzlist->items;
 }
 ```

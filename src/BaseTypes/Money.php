@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Copyright (c) 2019. CDEK-IT. All rights reserved.
- * See LICENSE.md for license details.
- *
- * @author Chizhekov Viktor
- */
+declare(strict_types=1);
 
 namespace CdekSDK2\BaseTypes;
 
@@ -33,8 +28,8 @@ class Money extends Base
 
     /**
      * Ставка НДС
-     * @Type("integer")
-     * @var integer|null
+     * @Type("int")
+     * @var int|null
      */
     public $vat_rate;
 

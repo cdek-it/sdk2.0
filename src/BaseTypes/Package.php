@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Copyright (c) 2019. CDEK-IT. All rights reserved.
- * See LICENSE.md for license details.
- *
- * @author Chizhekov Viktor
- */
+declare(strict_types=1);
 
 namespace CdekSDK2\BaseTypes;
 
@@ -26,29 +21,29 @@ class Package extends Base
 
     /**
      * Общий вес (в граммах)
-     * @Type("integer")
-     * @var integer
+     * @Type("int")
+     * @var int
      */
     public $weight;
 
     /**
      * Габариты упаковки. Длина (в сантиметрах)
-     * @Type("integer")
-     * @var integer
+     * @Type("int")
+     * @var int
      */
     public $length;
 
     /**
      * Габариты упаковки. Ширина (в сантиметрах)
-     * @Type("integer")
-     * @var integer
+     * @Type("int")
+     * @var int
      */
     public $width;
 
     /**
      * Габариты упаковки. Высота (в сантиметрах)
      * @Type("integer")
-     * @var integer
+     * @var int
      */
     public $height;
 
@@ -83,8 +78,7 @@ class Package extends Base
                 'required', 'array',
                 function ($value) {
                     foreach ($value as $item) {
-                        if (is_subclass_of($item, Base::class) && $item instanceof Item) {
-                            /* @var $item Item */
+                        if ($item instanceof Item) {
                             $item->validate();
                         }
                     }

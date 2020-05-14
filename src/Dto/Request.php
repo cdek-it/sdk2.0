@@ -1,19 +1,14 @@
 <?php
 
-/**
- * Copyright (c) 2020. CDEK-IT. All rights reserved.
- * See LICENSE.md for license details.
- *
- * @author Chizhekov Viktor
- */
+declare(strict_types=1);
 
-namespace CdekSDK2\BaseTypes;
+namespace CdekSDK2\Dto;
 
 use JMS\Serializer\Annotation\Type;
 
 /**
  * Class Request
- * @package CdekSDK2\BaseTypes
+ * @package CdekSDK2\Dto
  */
 class Request
 {
@@ -49,14 +44,14 @@ class Request
 
     /**
      * Список ошибок
-     * @Type("array<CdekSDK2\BaseTypes\Error>")
+     * @Type("array<CdekSDK2\Dto\Error>")
      * @var Error[]
      */
     public $errors;
 
     /**
      * Список предупреждений
-     * @Type("array<CdekSDK2\BaseTypes\Warning>")
+     * @Type("array<CdekSDK2\Dto\Warning>")
      * @var Warning[]
      */
     public $warnings;

@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Copyright (c) 2019. CDEK-IT. All rights reserved.
- * See LICENSE.md for license details.
- *
- * @author Chizhekov Viktor
- */
+declare(strict_types=1);
 
 namespace CdekSDK2\Actions;
 
@@ -75,7 +70,7 @@ class Action
      * @param string|null $uuid
      * @return string
      */
-    protected function slug(string $uuid = null)
+    protected function slug(string $uuid = null): string
     {
         if (empty($uuid)) {
             return static::URL;

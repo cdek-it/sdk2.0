@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Copyright (c) 2019. CDEK-IT. All rights reserved.
- * See LICENSE.md for license details.
- *
- * @author Chizhekov Viktor
- */
+declare(strict_types=1);
 
 namespace CdekSDK2\BaseTypes;
 
@@ -47,22 +42,22 @@ class Item extends Base
 
     /**
      * Вес (за единицу товара, в граммах)
-     * @Type("integer")
-     * @var integer
+     * @Type("int")
+     * @var int
      */
     public $weight;
 
     /**
      * Вес брутто (только для международных заказов)
-     * @Type("integer")
-     * @var integer
+     * @Type("int")
+     * @var int
      */
     public $weight_gross;
 
     /**
      * Количество единиц товара
-     * @Type("integer")
-     * @var integer
+     * @Type("int")
+     * @var int
      */
     public $amount;
 
@@ -96,8 +91,8 @@ class Item extends Base
 
     /**
      * Содержит ли радиочастотные модули (wifi/gsm)
-     * @Type("boolean")
-     * @var boolean
+     * @Type("bool")
+     * @var bool
      */
     public $wifi_gsm = false;
 
@@ -124,8 +119,7 @@ class Item extends Base
             'payment' => [
                 'required',
                 function ($value) {
-                    if (is_subclass_of($value, Base::class) && $value instanceof Money) {
-                        /* @var $value Money */
+                    if ($value instanceof Money) {
                         $value->validate();
                     }
                 }

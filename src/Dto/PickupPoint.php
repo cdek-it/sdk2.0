@@ -1,19 +1,16 @@
 <?php
 
-/**
- * Copyright (c) 2019. CDEK-IT. All rights reserved.
- * See LICENSE.md for license details.
- *
- * @author Chizhekov Viktor
- */
+declare(strict_types=1);
 
-namespace CdekSDK2\BaseTypes;
+namespace CdekSDK2\Dto;
 
+use CdekSDK2\BaseTypes\Location;
+use CdekSDK2\BaseTypes\Phone;
 use JMS\Serializer\Annotation\Type;
 
 /**
  * Class PickupPoint
- * @package CdekSDK2\BaseTypes
+ * @package CdekSDK2\Dto
  */
 class PickupPoint
 {
@@ -82,36 +79,36 @@ class PickupPoint
 
     /**
      * Является ли ПВЗ только пунктом выдачи или также осуществляет приём грузов
-     * @Type("boolean")
-     * @var boolean
+     * @Type("bool")
+     * @var bool
      */
     public $take_only;
 
     /**
      * Есть ли примерочная
-     * @Type("boolean")
-     * @var boolean
+     * @Type("bool")
+     * @var bool
      */
     public $is_dressing_room;
 
     /**
      * Есть терминал оплаты
-     * @Type("boolean")
-     * @var boolean
+     * @Type("bool")
+     * @var bool
      */
     public $have_cashless;
 
     /**
      * Есть приём наличных
-     * @Type("boolean")
-     * @var boolean
+     * @Type("bool")
+     * @var bool
      */
     public $have_cash;
 
     /**
      * Разрешен наложенный платеж в ПВЗ
-     * @Type("boolean")
-     * @var boolean
+     * @Type("bool")
+     * @var bool
      */
     public $allowed_cod;
 
@@ -152,21 +149,21 @@ class PickupPoint
 
     /**
      * Все фото офиса
-     * @Type("array<CdekSDK2\BaseTypes\PickupImage>")
+     * @Type("array<CdekSDK2\Dto\PickupImage>")
      * @var PickupImage[]
      */
     public $office_image_list;
 
     /**
      * График работы на неделю
-     * @Type("array<CdekSDK2\BaseTypes\WorkTime>")
+     * @Type("array<CdekSDK2\Dto\WorkTime>")
      * @var WorkTime[]
      */
     public $work_time_list;
 
     /**
      * Исключения в графике работы офиса
-     * @Type("array<CdekSDK2\BaseTypes\WorkTimeExceptions>")
+     * @Type("array<CdekSDK2\Dto\WorkTimeExceptions>")
      * @var WorkTimeExceptions[]
      */
     public $work_time_exceptions;

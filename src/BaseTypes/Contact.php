@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Copyright (c) 2019. CDEK-IT. All rights reserved.
- * See LICENSE.md for license details.
- *
- * @author Chizhekov Viktor
- */
+declare(strict_types=1);
 
 namespace CdekSDK2\BaseTypes;
 
@@ -110,12 +105,12 @@ class Contact extends Base
             'phones' => [
                 'required',
                 function ($value) {
-                    if (!is_array($value) || count($value) < 1 || empty($value)) {
+                    if (!is_array($value) || empty($value) || count($value) < 1) {
                         return false;
                     }
                     $i = 0;
                     foreach ($value as $item) {
-                        if (is_subclass_of($item, Base::class) && $item instanceof Phone) {
+                        if ($item instanceof Phone) {
                             /* @var $item Phone */
                             $i += (int)$item->validate();
                         }

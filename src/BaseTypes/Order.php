@@ -1,14 +1,10 @@
 <?php
 
-/**
- * Copyright (c) 2019. CDEK-IT. All rights reserved.
- * See LICENSE.md for license details.
- *
- * @author Chizhekov Viktor
- */
+declare(strict_types=1);
 
 namespace CdekSDK2\BaseTypes;
 
+use CdekSDK2\Dto\Statuses;
 use JMS\Serializer\Annotation\SkipWhenEmpty;
 use JMS\Serializer\Annotation\Type;
 
@@ -35,7 +31,7 @@ class Order extends Base
 
     /**
      * Номер заказа в системе СДЭК
-     * @Type("integer")
+     * @Type("int")
      * @var int
      */
     public $cdek_number;
@@ -49,7 +45,7 @@ class Order extends Base
 
     /**
      * Код тарифа
-     * @Type("integer")
+     * @Type("int")
      * @var int
      */
     public $tariff_code;
@@ -165,8 +161,8 @@ class Order extends Base
 
     /**
      * Дополнительные услуги
-     * @Type("array")
-     * @var array
+     * @Type("array<CdekSDK2\BaseTypes\Services>")
+     * @var Services[]
      */
     public $services;
 
@@ -180,7 +176,7 @@ class Order extends Base
     /**
      * Список статусов по заказу, отсортированных по дате и времени
      * @SkipWhenEmpty()
-     * @Type("array<CdekSDK2\BaseTypes\Statuses>")
+     * @Type("array<CdekSDK2\Dto\Statuses>")
      * @var Statuses[]
      */
     public $statuses;
@@ -198,8 +194,7 @@ class Order extends Base
             'sender' => [
                 'required',
                 function ($value) {
-                    if (is_subclass_of($value, Base::class) && $value instanceof Contact) {
-                        /* @var $value Contact */
+                    if ($value instanceof Contact) {
                         return $value->validate();
                     }
                 }
@@ -207,8 +202,7 @@ class Order extends Base
             'recipient' => [
                 'required',
                 function ($value) {
-                    if (is_subclass_of($value, Base::class) && $value instanceof Contact) {
-                        /* @var $value Contact */
+                    if ($value instanceof Contact) {
                         return $value->validate();
                     }
                 }
@@ -216,8 +210,7 @@ class Order extends Base
             'from_location' => [
                 'required',
                 function ($value) {
-                    if (is_subclass_of($value, Base::class) && $value instanceof Location) {
-                        /* @var $value Location */
+                    if ($value instanceof Location) {
                         return $value->validate();
                     }
                 }
@@ -225,8 +218,7 @@ class Order extends Base
             'to_location' => [
                 'required',
                 function ($value) {
-                    if (is_subclass_of($value, Base::class) && $value instanceof Location) {
-                        /* @var $value Location */
+                    if ($value instanceof Location) {
                         return $value->validate();
                     }
                 }
@@ -234,13 +226,12 @@ class Order extends Base
             'packages' => [
                 'required', 'array',
                 function ($value) {
-                    if (!is_array($value) || count($value) < 1 || empty($value)) {
+                    if (!is_array($value) || empty($value) || count($value) < 1) {
                         return false;
                     }
                     $i = 0;
                     foreach ($value as $item) {
-                        if (is_subclass_of($item, Base::class) && $item instanceof Package) {
-                            /* @var $item Package */
+                        if ($item instanceof Package) {
                             $i += (int)$item->validate();
                         }
                     }

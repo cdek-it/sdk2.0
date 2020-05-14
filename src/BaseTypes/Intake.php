@@ -1,14 +1,10 @@
 <?php
 
-/**
- * Copyright (c) 2019. CDEK-IT. All rights reserved.
- * See LICENSE.md for license details.
- *
- * @author Chizhekov Viktor
- */
+declare(strict_types=1);
 
 namespace CdekSDK2\BaseTypes;
 
+use CdekSDK2\Dto\Statuses;
 use JMS\Serializer\Annotation\SkipWhenEmpty;
 use JMS\Serializer\Annotation\Type;
 
@@ -34,8 +30,8 @@ class Intake extends Base
 
     /**
      * Номер заказа СДЭК
-     * @Type("integer")
-     * @var integer
+     * @Type("int")
+     * @var int
      */
     public $cdek_number;
 
@@ -83,29 +79,29 @@ class Intake extends Base
 
     /**
      * Общий вес (в граммах)
-     * @Type("integer")
-     * @var integer
+     * @Type("int")
+     * @var int
      */
     public $weight;
 
     /**
      * Габариты упаковки. Длина (в сантиметрах)
-     * @Type("integer")
-     * @var integer
+     * @Type("int")
+     * @var int
      */
     public $length;
 
     /**
      * Габариты упаковки. Ширина (в сантиметрах)
-     * @Type("integer")
-     * @var integer
+     * @Type("int")
+     * @var int
      */
     public $width;
 
     /**
      * Габариты упаковки. Высота (в сантиметрах)
-     * @Type("integer")
-     * @var integer
+     * @Type("int")
+     * @var int
      */
     public $height;
 
@@ -132,14 +128,14 @@ class Intake extends Base
 
     /**
      * Необходим прозвон отправителя
-     * @Type("boolean")
-     * @var boolean
+     * @Type("bool")
+     * @var bool
      */
     public $need_call = false;
 
     /**
      * @SkipWhenEmpty()
-     * @Type("array<CdekSDK2\BaseTypes\Statuses>")
+     * @Type("array<CdekSDK2\Dto\Statuses>")
      * @var Statuses[]
      */
     public $statuses;
@@ -159,8 +155,7 @@ class Intake extends Base
             'sender' => [
                 '',
                 function ($value) {
-                    if (is_subclass_of($value, Base::class) && $value instanceof Contact) {
-                        /* @var $value Contact */
+                    if ($value instanceof Contact) {
                         return $value->validate();
                     }
                 }
@@ -168,8 +163,7 @@ class Intake extends Base
             'from_location' => [
                 '',
                 function ($value) {
-                    if (is_subclass_of($value, Base::class) && $value instanceof Location) {
-                        /* @var $value Location */
+                    if ($value instanceof Location) {
                         return $value->validate();
                     }
                 }

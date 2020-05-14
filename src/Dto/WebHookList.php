@@ -1,7 +1,10 @@
 <?php
 
-namespace CdekSDK2\BaseTypes;
+declare(strict_types=1);
 
+namespace CdekSDK2\Dto;
+
+use CdekSDK2\BaseTypes\WebHook;
 use JMS\Serializer\Annotation\Type;
 
 class WebHookList

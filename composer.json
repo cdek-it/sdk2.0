@@ -60,7 +60,10 @@
   "scripts": {
     "test": "./vendor/bin/phpunit  --colors=always",
     "check-style": "./vendor/bin/phpcs --standard=PSR12 src/ tests/",
-    "fix-style": "./vendor/bin/phpcbf --standard=PSR12 src/ tests/"
+    "fix-style": "./vendor/bin/phpcbf --standard=PSR12 src/ tests/",
+    "phan": "./vendor/bin/phan",
+    "phpstan": "./vendor/bin/phpstan analyse src --level max --no-progress -vvv",
+    "psalm": "./vendor/bin/psalm -c=psalm.xml"
   },
   "support": {
     "issues": "https://github.com/cdek-it/sdk2.0/issues",

@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Copyright (c) 2019. CDEK-IT. All rights reserved.
- * See LICENSE.md for license details.
- *
- * @author Chizhekov Viktor
- */
+declare(strict_types=1);
 
 namespace CdekSDK2\BaseTypes;
 
@@ -15,7 +10,7 @@ use JMS\Serializer\Annotation\Type;
  * Class Services
  * @package CdekSDK2\BaseTypes
  */
-class Services
+class Services extends Base
 {
     /**
      * Код дополнительной услуги
@@ -30,4 +25,13 @@ class Services
      * @var float
      */
     public $parameter;
+
+    public function __construct(array $param = [])
+    {
+        parent::__construct($param);
+        $this->rules = [
+            'code' => 'required|alpha',
+            'parameter' => 'numeric',
+        ];
+    }
 }

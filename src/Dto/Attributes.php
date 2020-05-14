@@ -1,13 +1,8 @@
 <?php
 
-/**
- * Copyright (c) 2019. CDEK-IT. All rights reserved.
- * See LICENSE.md for license details.
- *
- * @author Chizhekov Viktor
- */
+declare(strict_types=1);
 
-namespace CdekSDK2\BaseTypes;
+namespace CdekSDK2\Dto;
 
 use JMS\Serializer\Annotation\Type;
 
@@ -15,7 +10,7 @@ class Attributes
 {
     /**
      * Признак возвратного заказа
-     * @Type("boolean")
+     * @Type("bool")
      * @var bool
      */
     public $is_return;

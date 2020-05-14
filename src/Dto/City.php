@@ -1,6 +1,8 @@
 <?php
 
-namespace CdekSDK2\BaseTypes;
+declare(strict_types=1);
+
+namespace CdekSDK2\Dto;
 
 use JMS\Serializer\Annotation\Type;
 
@@ -15,8 +17,8 @@ class City
 
     /**
      * Код населенного пункта (справочник СДЭК)
-     * @Type("integer")
-     * @var integer
+     * @Type("int")
+     * @var int
      */
     public $code;
 
@@ -71,8 +73,8 @@ class City
 
     /**
      * Код региона населенного пункта (справочник СДЭК)
-     * @Type("integer")
-     * @var integer
+     * @Type("int")
+     * @var int
      */
     public $region_code;
 

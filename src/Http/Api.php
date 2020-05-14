@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Copyright (c) 2019. CDEK-IT. All rights reserved.
- * See LICENSE.md for license details.
- *
- * @author Chizhekov Viktor
- */
+declare(strict_types=1);
 
 namespace CdekSDK2\Http;
 
@@ -81,7 +76,7 @@ class Api
     /**
      * @param string $account
      */
-    public function setAccount(string $account)
+    public function setAccount(string $account): void
     {
         $this->account = $account;
     }
@@ -97,7 +92,7 @@ class Api
     /**
      * @param string $token
      */
-    public function setToken(string $token)
+    public function setToken(string $token): void
     {
         $this->token = $token;
     }
@@ -113,7 +108,7 @@ class Api
     /**
      * @param string $secure
      */
-    public function setSecure(string $secure)
+    public function setSecure(string $secure): void
     {
         $this->secure = $secure;
     }
@@ -129,7 +124,7 @@ class Api
     /**
      * @param bool $test
      */
-    public function setTest(bool $test)
+    public function setTest(bool $test): void
     {
         $this->test = $test;
         if ($test) {
@@ -156,11 +151,10 @@ class Api
             $token_info = $this->decodeBody($response->getBody());
             $this->token = $token_info['access_token'] ?? '';
             $this->expire = $token_info['expires_in'] ?? 0;
-            $this->expire = (int)(time() + $this->expire - 10);
+            $this->expire = time() + $this->expire - 10;
             return true;
-        } else {
-            throw new AuthException(Constants::AUTH_FAIL);
         }
+        throw new AuthException(Constants::AUTH_FAIL);
     }
 
     /**
@@ -182,7 +176,7 @@ class Api
     /**
      * @param int $timestamp
      */
-    public function setExpire(int $timestamp)
+    public function setExpire(int $timestamp): void
     {
         $this->expire = $timestamp;
     }

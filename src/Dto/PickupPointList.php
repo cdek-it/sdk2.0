@@ -1,33 +1,28 @@
 <?php
 
-/**
- * Copyright (c) 2019. CDEK-IT. All rights reserved.
- * See LICENSE.md for license details.
- *
- * @author Chizhekov Viktor
- */
+declare(strict_types=1);
 
-namespace CdekSDK2\BaseTypes;
+namespace CdekSDK2\Dto;
 
 use JMS\Serializer\Annotation\Type;
 
 /**
  * Class PickupPointList
- * @package CdekSDK2\BaseTypes
+ * @package CdekSDK2\Dto
  */
 class PickupPointList
 {
     /**
      * Список ПВЗ
-     * @Type("array<CdekSDK2\BaseTypes\PickupPoint>")
+     * @Type("array<CdekSDK2\Dto\PickupPoint>")
      * @var PickupPoint[]
      */
     public $items = [];
 
     /**
-     * @return int|void
+     * @return int
      */
-    public function getCount()
+    public function getCount(): int
     {
         return count($this->items);
     }
@@ -39,7 +34,6 @@ class PickupPointList
     public function filter(array $filter = []): array
     {
         $filtered = [];
-        /* @var PickupPoint $pvz */
         foreach ($this->items as $pvz) {
             foreach ($filter as $k => $v) {
                 if (property_exists(PickupPoint::class, $k) && mb_strtolower($pvz->$k) === mb_strtolower($v)) {

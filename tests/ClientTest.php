@@ -14,7 +14,7 @@ use CdekSDK2\Actions\Offices;
 use CdekSDK2\Actions\Orders;
 use CdekSDK2\Actions\Webhooks;
 use CdekSDK2\BaseTypes\Invoice;
-use CdekSDK2\BaseTypes\RegionList;
+use CdekSDK2\Dto\RegionList;
 use CdekSDK2\Client;
 use CdekSDK2\Exceptions\ParsingException;
 use CdekSDK2\Http\ApiResponse;

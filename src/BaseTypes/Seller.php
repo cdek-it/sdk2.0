@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Copyright (c) 2019. CDEK-IT. All rights reserved.
- * See LICENSE.md for license details.
- *
- * @author Chizhekov Viktor
- */
+declare(strict_types=1);
 
 namespace CdekSDK2\BaseTypes;
 
@@ -28,7 +23,7 @@ class Seller extends Base
     /**
      * ИНН истинного продавца
      * @SkipWhenEmpty()
-     * @Type("integer")
+     * @Type("int")
      * @var int
      */
     public $inn;
@@ -42,7 +37,7 @@ class Seller extends Base
 
     /**
      * Код формы собственности
-     * @Type("integer")
+     * @Type("int")
      * @var int
      */
     public $ownership_form;

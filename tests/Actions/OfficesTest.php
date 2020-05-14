@@ -10,7 +10,7 @@
 namespace CdekSDK2\Tests\Actions;
 
 use CdekSDK2\Actions\Offices;
-use CdekSDK2\BaseTypes\PickupPointList;
+use CdekSDK2\Dto\PickupPointList;
 use CdekSDK2\Client;
 use CdekSDK2\Http\ApiResponse;
 use PHPUnit\Framework\TestCase;

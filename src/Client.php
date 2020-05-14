@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Copyright (c) 2019. CDEK-IT. All rights reserved.
- * See LICENSE.md for license details.
- *
- * @author Chizhekov Viktor
- */
+declare(strict_types=1);
 
 namespace CdekSDK2;
 
@@ -17,11 +12,11 @@ use CdekSDK2\Actions\LocationRegions;
 use CdekSDK2\Actions\Offices;
 use CdekSDK2\Actions\Orders;
 use CdekSDK2\Actions\Webhooks;
-use CdekSDK2\BaseTypes\CityList;
-use CdekSDK2\BaseTypes\PickupPointList;
-use CdekSDK2\BaseTypes\RegionList;
-use CdekSDK2\BaseTypes\Response;
-use CdekSDK2\BaseTypes\WebHookList;
+use CdekSDK2\Dto\CityList;
+use CdekSDK2\Dto\RegionList;
+use CdekSDK2\Dto\WebHookList;
+use CdekSDK2\Dto\PickupPointList;
+use CdekSDK2\Dto\Response;
 use CdekSDK2\Exceptions\AuthException;
 use CdekSDK2\Exceptions\ParsingException;
 use CdekSDK2\Http\Api;

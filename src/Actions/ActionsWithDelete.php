@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Copyright (c) 2019. CDEK-IT. All rights reserved.
- * See LICENSE.md for license details.
- *
- * @author Chizhekov Viktor
- */
+declare(strict_types=1);
 
 namespace CdekSDK2\Actions;
 
@@ -23,7 +18,7 @@ class ActionsWithDelete extends Action
      * @return ApiResponse
      * @throws \CdekSDK2\Exceptions\RequestException
      */
-    public function delete(string $uuid)
+    public function delete(string $uuid): ApiResponse
     {
         $response = $this->http_client->delete($this->slug($uuid));
         return $response;

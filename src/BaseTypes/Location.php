@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Copyright (c) 2019. CDEK-IT. All rights reserved.
- * See LICENSE.md for license details.
- *
- * @author Chizhekov Viktor
- */
+declare(strict_types=1);
 
 namespace CdekSDK2\BaseTypes;
 
@@ -19,7 +14,7 @@ class Location extends Base
 {
     /**
      * Код локации из справочника СДЭК
-     * @Type("integer")
+     * @Type("int")
      * @var int
      */
     public $code;
