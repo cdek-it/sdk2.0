@@ -14,8 +14,8 @@ class Threshold extends Base
 {
     /**
      * Порог стоимости товара (действует по условию меньше или равно) в целых единицах валюты
-     * @Type("integer")
-     * @var integer
+     * @Type("int")
+     * @var int
      */
     public $threshold;
 
@@ -35,8 +35,8 @@ class Threshold extends Base
 
     /**
      * Ставка НДС
-     * @Type("integer")
-     * @var integer|null
+     * @Type("int")
+     * @var int|null
      */
     public $vat_rate;
 

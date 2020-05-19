@@ -12,7 +12,7 @@
 - создание заказа
 - информация о заказе
 - удаление заказа
-- подписка на вебхуки
+- подписка на вебхуки (статусы заказов и статусы печатных форм)
 - информация о подписке на вебхуки
 - удаление подписки на вебхуки
 - получение списка ПВЗ
@@ -77,7 +77,7 @@ if ($res->isOk()) {
 // получение информации о заказе
 $res = $cdek->orders()->get($cdek_order->entity->uuid);
 if ($res->isOk()) {
-    $cdek_order = $cdek->formatResponse($res, \CdekSDK2\BaseTypes\Order::class);
+    $cdek_order = $cdek->formatResponse($res, \CdekSDK2\Dto\OrderInfo::class);
 }
 
 

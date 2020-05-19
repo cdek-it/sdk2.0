@@ -27,6 +27,13 @@ class Item extends Base
     public $ware_key;
 
     /**
+     * Маркировка товара/вложения
+     * @Type("string")
+     * @var string
+     */
+    public $marking;
+
+    /**
      * Оплата за товар при получении
      * @Type("CdekSDK2\BaseTypes\Money")
      * @var Money
@@ -62,6 +69,13 @@ class Item extends Base
     public $amount;
 
     /**
+     * Количество врученных единиц товара (в штуках)
+     * @Type("int")
+     * @var int
+     */
+    public $delivery_amount;
+
+    /**
      * Наименование на иностранном языке
      * @Type("string")
      * @var string
@@ -76,16 +90,16 @@ class Item extends Base
     public $brand;
 
     /**
-     * Код страны в формате  ISO_3166-1_alpha-2
+     * Код страны в формате ISO_3166-1_alpha-2
      * @Type("string")
      * @var string
      */
     public $country_code;
 
     /**
-     * Название материала из которого сделан товар
-     * @Type("string")
-     * @var string
+     * Код материала
+     * @Type("int")
+     * @var int
      */
     public $material;
 

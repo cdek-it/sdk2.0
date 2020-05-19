@@ -18,14 +18,24 @@ use JMS\Serializer\Annotation\Type;
 class Response
 {
     /**
+     * Информация о сущности, над которой выполняется запрос
+     * (заказ, заявка, печатная форма, договоренность о доставке, подписка)
      * @Type("CdekSDK2\BaseTypes\WebHook")
-     * @var Barcode | Intake | Invoice | Order | WebHook
+     * @var Barcode | Intake | Invoice | Order | WebHook | OrderInfo
      */
     public $entity;
 
     /**
+     * Информация о запросах над сущностью
      * @Type("array<CdekSDK2\Dto\Request>")
      * @var Request[]
      */
     public $requests;
+
+    /**
+     * Связанные с заказом сущности
+     * @Type("array<CdekSDK2\Dto\Relations>")
+     * @var  Relations[]
+     */
+    public $related_entities;
 }

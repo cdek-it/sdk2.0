@@ -26,6 +26,13 @@ class Services extends Base
      */
     public $parameter;
 
+    /**
+     * Сумма услуги (в валюте договора)
+     * @Type("float")
+     * @var float
+     */
+    public $sum;
+
     public function __construct(array $param = [])
     {
         parent::__construct($param);

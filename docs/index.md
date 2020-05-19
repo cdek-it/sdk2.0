@@ -237,7 +237,7 @@ $cdek = new \CdekSDK2\Client($client, 'account', 'secure');
 $result = $cdek->orders()->get($uuid);
 if ($result->isOk()) {
     //Запрос успешно выполнился
-    $response_order = $cdek->formatResponse($result, \CdekSDK2\BaseTypes\Order::class);
+    $response_order = $cdek->formatResponse($result, \CdekSDK2\Dto\OrderInfo::class);
     $response_order->entity->uuid;
 }
 

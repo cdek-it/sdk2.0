@@ -63,6 +63,13 @@ class Location extends Base
     public $region;
 
     /**
+     * Код региона (справочник СДЭК)
+     * @Type("int")
+     * @var int
+     */
+    public $region_code;
+
+    /**
      * Название района региона
      * @Type("string")
      * @var string

@@ -2,21 +2,26 @@
 
 declare(strict_types=1);
 
-namespace CdekSDK2\BaseTypes;
+namespace CdekSDK2\Dto;
 
-use CdekSDK2\Dto\Statuses;
+use CdekSDK2\BaseTypes\Contact;
+use CdekSDK2\BaseTypes\Location;
+use CdekSDK2\BaseTypes\Money;
+use CdekSDK2\BaseTypes\Package;
+use CdekSDK2\BaseTypes\Seller;
+use CdekSDK2\BaseTypes\Services;
+use CdekSDK2\BaseTypes\Threshold;
 use JMS\Serializer\Annotation\SkipWhenEmpty;
 use JMS\Serializer\Annotation\Type;
 
 /**
  * Class Order
- * @package CdekSDK2\BaseTypes
+ * @package CdekSDK2\Dto
  */
-class Order extends Base
+class OrderInfo
 {
     /**
      * Идентификатор заказа
-     * @SkipWhenEmpty()
      * @Type("string")
      * @var string
      */
@@ -27,7 +32,14 @@ class Order extends Base
      * @Type("int")
      * @var int
      */
-    public $type = 1;
+    public $type;
+
+    /**
+     * Признак возвратного заказа
+     * @Type("bool")
+     * @var bool
+     */
+    public $is_return;
 
     /**
      * Номер заказа в системе СДЭК
@@ -66,7 +78,6 @@ class Order extends Base
 
     /**
      * Код ПВЗ для забора
-     * @SkipWhenEmpty()
      * @Type("string")
      * @var string
      */
@@ -74,7 +85,6 @@ class Order extends Base
 
     /**
      * Код ПВЗ СДЭК для доставки
-     * @SkipWhenEmpty()
      * @Type("string")
      * @var string
      */
@@ -82,7 +92,6 @@ class Order extends Base
 
     /**
      * Код валюты объявленной стоимости заказа
-     * @SkipWhenEmpty()
      * @Type("string")
      * @var string
      */
@@ -90,7 +99,6 @@ class Order extends Base
 
     /**
      * Код валюты наложенного платежа
-     * @SkipWhenEmpty()
      * @Type("string")
      * @var string
      */
@@ -181,62 +189,16 @@ class Order extends Base
     public $packages;
 
     /**
-     * Order constructor.
-     * @param array $param
+     * Список статусов по заказу, отсортированных по дате и времени
+     * @Type("array<CdekSDK2\Dto\Statuses>")
+     * @var Statuses[]
      */
-    public function __construct(array $param = [])
-    {
-        parent::__construct($param);
-        $this->rules = [
-            'tariff_code' => 'required|numeric',
-            'services' => 'array',
-            'sender' => [
-                'required',
-                function ($value) {
-                    if ($value instanceof Contact) {
-                        return $value->validate();
-                    }
-                }
-            ],
-            'recipient' => [
-                'required',
-                function ($value) {
-                    if ($value instanceof Contact) {
-                        return $value->validate();
-                    }
-                }
-            ],
-            'from_location' => [
-                'required',
-                function ($value) {
-                    if ($value instanceof Location) {
-                        return $value->validate();
-                    }
-                }
-            ],
-            'to_location' => [
-                'required',
-                function ($value) {
-                    if ($value instanceof Location) {
-                        return $value->validate();
-                    }
-                }
-            ],
-            'packages' => [
-                'required', 'array',
-                function ($value) {
-                    if (!is_array($value) || empty($value) || count($value) < 1) {
-                        return false;
-                    }
-                    $i = 0;
-                    foreach ($value as $item) {
-                        if ($item instanceof Package) {
-                            $i += (int)$item->validate();
-                        }
-                    }
-                    return ($i === count($value));
-                }
-            ],
-        ];
-    }
+    public $statuses;
+
+    /**
+     * Информация о вручении
+     * @Type("array<CdekSDK2\Dto\DeliveryDetail>")
+     * @var DeliveryDetail[]
+     */
+    public $delivery_detail;
 }

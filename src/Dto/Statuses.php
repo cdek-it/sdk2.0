@@ -13,20 +13,6 @@ use JMS\Serializer\Annotation\Type;
 class Statuses
 {
     /**
-     * Номер заказа СДЭК
-     * @Type("int")
-     * @var int
-     */
-    public $cdek_number;
-
-    /**
-     * Номер заказа в ИС Клиента
-     * @Type("string")
-     * @var string
-     */
-    public $number;
-
-    /**
      * Код статуса
      * @Type("string")
      * @var string
@@ -60,4 +46,11 @@ class Statuses
      * @var string
      */
     public $city;
+
+    /**
+     * Код населенного пункта возникновения статуса
+     * @Type("int")
+     * @var int
+     */
+    public $city_code;
 }

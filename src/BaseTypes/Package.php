@@ -27,6 +27,20 @@ class Package extends Base
     public $weight;
 
     /**
+     * Объемный вес (в граммах)
+     * @Type("int")
+     * @var int
+     */
+    public $weight_volume;
+
+    /**
+     * Расчетный вес (в граммах)
+     * @Type("int")
+     * @var int
+     */
+    public $weight_calc;
+
+    /**
      * Габариты упаковки. Длина (в сантиметрах)
      * @Type("int")
      * @var int
@@ -42,7 +56,7 @@ class Package extends Base
 
     /**
      * Габариты упаковки. Высота (в сантиметрах)
-     * @Type("integer")
+     * @Type("int")
      * @var int
      */
     public $height;
