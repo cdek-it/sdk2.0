@@ -67,8 +67,8 @@ class ApiTest extends TestCase
     {
         $this->api->setTest(true);
         $this->assertTrue($this->api->isTest());
-        $this->assertStringContainsString('z9GRRu7FxmO53CQ9cFfI6qiy32wpfTkd', $this->api->getAccount());
-        $this->assertStringContainsString('w24JTCv4MnAcuRTx0oHjHLDtyt3I6IBq', $this->api->getSecure());
+        $this->assertStringContainsString(Constants::TEST_ACCOUNT, $this->api->getAccount());
+        $this->assertStringContainsString(Constants::TEST_SECURE, $this->api->getSecure());
     }
 
     public function testAuthorize()

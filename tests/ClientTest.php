@@ -14,6 +14,7 @@ use CdekSDK2\Actions\Offices;
 use CdekSDK2\Actions\Orders;
 use CdekSDK2\Actions\Webhooks;
 use CdekSDK2\BaseTypes\Invoice;
+use CdekSDK2\Constants;
 use CdekSDK2\Dto\RegionList;
 use CdekSDK2\Client;
 use CdekSDK2\Exceptions\ParsingException;
@@ -71,8 +72,8 @@ class ClientTest extends TestCase
     {
         $this->client->setTest(true);
         $this->assertTrue($this->client->isTest());
-        $this->assertStringContainsString('z9GRRu7FxmO53CQ9cFfI6qiy32wpfTkd', $this->client->getAccount());
-        $this->assertStringContainsString('w24JTCv4MnAcuRTx0oHjHLDtyt3I6IBq', $this->client->getSecure());
+        $this->assertStringContainsString(Constants::TEST_ACCOUNT, $this->client->getAccount());
+        $this->assertStringContainsString(Constants::TEST_SECURE, $this->client->getSecure());
         return $this->client;
     }
 

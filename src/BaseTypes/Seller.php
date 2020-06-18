@@ -30,8 +30,8 @@ class Seller extends Base
 
     /**
      * Телефон истинного продавца
-     * @Type("CdekSDK2\BaseTypes\Phone")
-     * @var Phone
+     * @Type("string")
+     * @var string
      */
     public $phone;
 

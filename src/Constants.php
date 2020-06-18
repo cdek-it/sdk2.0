@@ -278,13 +278,13 @@ class Constants
      * Аккаунт для тестовой среды
      * @var string
      */
-    public const TEST_ACCOUNT = 'z9GRRu7FxmO53CQ9cFfI6qiy32wpfTkd';
+    public const TEST_ACCOUNT = 'EMscd6r9JnFiQ3bLoyjJY6eM78JrJceI';
 
     /**
      * Секретный ключ для тестовой среды
      * @var string
      */
-    public const TEST_SECURE = 'w24JTCv4MnAcuRTx0oHjHLDtyt3I6IBq';
+    public const TEST_SECURE = 'PjLZkKBHEiLK3YsjtNrt3TGNG0ahs3kG';
 
     /**
      * Тип связанной сущности: возвратный заказ
@@ -325,103 +325,103 @@ class Constants
 
     /**
      * Код материала товара: Полиэстер
-     * @var string
+     * @var int
      */
     public const MATERIAL_POLYESTER = 1;
 
     /**
      * Код материала товара: Нейлон
-     * @var string
+     * @var int
      */
     public const MATERIAL_NYLON = 2;
 
     /**
      * Код материала товара: Флис
-     * @var string
+     * @var int
      */
     public const MATERIAL_FLEECE = 3;
 
     /**
      * Код материала товара: Хлопок
-     * @var string
+     * @var int
      */
     public const MATERIAL_COTTON = 4;
 
     /**
      * Код материала товара: Текстиль
-     * @var string
+     * @var int
      */
     public const MATERIAL_TEXTILES = 5;
 
     /**
      * Код материала товара: Лён
-     * @var string
+     * @var int
      */
     public const MATERIAL_FLAX = 6;
 
     /**
      * Код материала товара: Вискоза
-     * @var string
+     * @var int
      */
     public const MATERIAL_VISCOSE = 7;
 
     /**
      * Код материала товара: Шелк
-     * @var string
+     * @var int
      */
     public const MATERIAL_SILK = 8;
 
     /**
      * Код материала товара: Шерсть
-     * @var string
+     * @var int
      */
     public const MATERIAL_WOOL = 9;
 
     /**
      * Код материала товара: Кашемир
-     * @var string
+     * @var int
      */
     public const MATERIAL_CASHMERE = 10;
 
     /**
      * Код материала товара: Кожа
-     * @var string
+     * @var int
      */
     public const MATERIAL_LEATHER = 11;
 
     /**
      * Код материала товара: Кожзам
-     * @var string
+     * @var int
      */
     public const MATERIAL_LEATHERETTE = 12;
 
     /**
      * Код материала товара: Искусственный мех
-     * @var string
+     * @var int
      */
     public const MATERIAL_FAUX_FUR = 13;
 
     /**
      * Код материала товара: Замша
-     * @var string
+     * @var int
      */
     public const MATERIAL_SUEDE = 14;
 
     /**
      * Код материала товара: Полиуретан
-     * @var string
+     * @var int
      */
     public const MATERIAL_POLYURETHANE = 15;
 
     /**
      * Код материала товара: Спандекс
-     * @var string
+     * @var int
      */
     public const MATERIAL_SPANDEX = 16;
 
     /**
      * Код материала товара: Резина
-     * @var string
+     * @var int
      */
     public const MATERIAL_RUBBER = 17;
 }
