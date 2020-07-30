@@ -197,8 +197,8 @@ class OrderInfo
 
     /**
      * Информация о вручении
-     * @Type("array<CdekSDK2\Dto\DeliveryDetail>")
-     * @var DeliveryDetail[]
+     * @Type("CdekSDK2\Dto\DeliveryDetail")
+     * @var DeliveryDetail
      */
     public $delivery_detail;
 }
