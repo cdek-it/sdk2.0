@@ -16,7 +16,7 @@ class Relations
     public $type;
 
     /**
-     * @Type("string>")
+     * @Type("string")
      * @var string
      */
     public $uuid;
