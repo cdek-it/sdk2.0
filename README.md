@@ -2,7 +2,7 @@
 [![Build Status](https://scrutinizer-ci.com/g/cdek-it/sdk2.0/badges/build.png?b=master)](https://scrutinizer-ci.com/g/cdek-it/sdk2.0/build-status/master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cdek-it/sdk2.0/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cdek-it/sdk2.0/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/cdek-it/sdk2.0/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/cdek-it/sdk2.0/?branch=master)
-![Packagist](https://img.shields.io/packagist/l/cdek-it/sdk2.0)
+[![Latest Stable Version](https://poser.pugx.org/cdek-it/sdk2.0/v/stable)](https://packagist.org/packages/cdek-it/sdk2.0)
 
 Реализация API v2.0 для [интеграции со службой доставки СДЭК](https://www.cdek.ru/clients/integrator.html).
 Данная SDK поможет быстрее внедрить в свой проект взаимодействие со службой доставки СДЭК.
