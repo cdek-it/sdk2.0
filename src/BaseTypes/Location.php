@@ -13,11 +13,11 @@ use JMS\Serializer\Annotation\Type;
 class Location extends Base
 {
     /**
-     * Код локации из справочника СДЭК
+     * Код города по базе СДЭК
      * @Type("int")
      * @var int
      */
-    public $code;
+    public $city_code;
 
     /**
      * Уникальный идентификатор ФИАС
@@ -39,6 +39,7 @@ class Location extends Base
      * @var float
      */
     public $longitude;
+
 
     /**
      * Широта

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CdekSDK2;
 
 use CdekSDK2\Actions\Barcodes;
+use CdekSDK2\Actions\CalculateTariffCode;
 use CdekSDK2\Actions\Intakes;
 use CdekSDK2\Actions\Invoices;
 use CdekSDK2\Actions\LocationCities;
@@ -83,6 +84,11 @@ class Client
      * @var LocationCities
      */
     private $cities;
+
+    /**
+     * @var CalculateTariffCode
+     */
+    private $tarrif;
 
     /**
      * Client constructor.
@@ -233,6 +239,17 @@ class Client
     }
 
     /**
+     * @return CalculateTariffCode
+     */
+    public function CalculateTariffCode(): CalculateTariffCode
+    {
+        if ($this->tarrif === null) {
+            $this->tarrif = new CalculateTariffCode($this->http_client, $this->serializer);
+        }
+        return $this->tarrif;
+    }
+
+    /**
      * @return Offices
      */
     public function offices(): Offices
@@ -264,6 +281,7 @@ class Client
         }
         return $this->cities;
     }
+
 
     /**
      * @return Webhooks
