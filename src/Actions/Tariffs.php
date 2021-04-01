@@ -11,8 +11,7 @@ class Tariffs extends Action
 {
     /**
      * URL для запросов к API
-     * @var string
-     */
+     * @var string */
     public const URL = '/calculator/tariff';
 
     /**

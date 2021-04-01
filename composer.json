@@ -20,9 +20,9 @@
     }
   ],
   "require": {
-    "php": "^7.1 || ^8.0",
+    "php": "^7.1|^8.0",
     "ext-json": "*",
-    "jms/serializer": "^1.14.0 || ^3.12",
+    "jms/serializer": "^1.14.0|^3.12",
     "nyholm/psr7": "^1.2",
     "psr/http-client": "^1.0",
     "rakit/validation": "^1.1"
@@ -60,10 +60,7 @@
   "scripts": {
     "test": "./vendor/bin/phpunit  --colors=always",
     "check-style": "./vendor/bin/phpcs --standard=PSR12 src/ tests/",
-    "fix-style": "./vendor/bin/phpcbf --standard=PSR12 src/ tests/",
-    "phan": "./vendor/bin/phan",
-    "phpstan": "./vendor/bin/phpstan analyse src --level max --no-progress -vvv",
-    "psalm": "./vendor/bin/psalm -c=psalm.xml"
+    "fix-style": "./vendor/bin/phpcbf --standard=PSR12 src/ tests/"
   },
   "support": {
     "issues": "https://github.com/cdek-it/sdk2.0/issues",
