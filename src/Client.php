@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace CdekSDK2;
 
 use CdekSDK2\Actions\Barcodes;
-use CdekSDK2\Actions\CalculateTariffCode;
+use CdekSDK2\Actions\TariffList;
+use CdekSDK2\Actions\Tariffs;
 use CdekSDK2\Actions\Intakes;
 use CdekSDK2\Actions\Invoices;
 use CdekSDK2\Actions\LocationCities;
@@ -15,6 +16,7 @@ use CdekSDK2\Actions\Orders;
 use CdekSDK2\Actions\Webhooks;
 use CdekSDK2\Dto\CityList;
 use CdekSDK2\Dto\RegionList;
+use CdekSDK2\Dto\Tariff;
 use CdekSDK2\Dto\WebHookList;
 use CdekSDK2\Dto\PickupPointList;
 use CdekSDK2\Dto\Response;
@@ -86,9 +88,14 @@ class Client
     private $cities;
 
     /**
-     * @var CalculateTariffCode
+     * @var Tariffs
      */
-    private $tarrif;
+    private $tariff;
+
+    /**
+     * @var TariffList
+     */
+    private $tariffList;
 
     /**
      * Client constructor.
@@ -239,14 +246,25 @@ class Client
     }
 
     /**
-     * @return CalculateTariffCode
+     * @return Tariffs
      */
-    public function CalculateTariffCode(): CalculateTariffCode
+    public function tariffs(): Tariffs
     {
-        if ($this->tarrif === null) {
-            $this->tarrif = new CalculateTariffCode($this->http_client, $this->serializer);
+        if ($this->tariff === null) {
+            $this->tariff = new Tariffs($this->http_client, $this->serializer);
         }
-        return $this->tarrif;
+        return $this->tariff;
+    }
+
+    /**
+     * @return TariffList
+     */
+    public function tariffList(): TariffList
+    {
+        if ($this->tariffList === null) {
+            $this->tariffList = new TariffList($this->http_client, $this->serializer);
+        }
+        return $this->tariffList;
     }
 
     /**
@@ -319,6 +337,23 @@ class Client
     /**
      * @param ApiResponse $response
      * @param string $className
+     * @return Tariff
+     * @throws ParsingException
+     */
+    public function formatResponseWithoutEntity(ApiResponse $response, string $className)
+    {
+        if (class_exists($className)) {
+            $result = $this->serializer->deserialize($response->getBody(), $className, 'json');
+
+            return $result;
+        }
+
+        throw new ParsingException('Class ' . $className . ' not found');
+    }
+
+    /**
+     * @param ApiResponse $response
+     * @param string $className
      * @return Response
      * @throws \Exception
      */
@@ -342,11 +377,12 @@ class Client
     /**
      * @param ApiResponse $response
      * @param string $className
-     * @return CityList|RegionList|PickupPointList|WebHookList
+     * @return CityList|RegionList|PickupPointList|WebHookList|
      * @throws \Exception
      */
     public function formatResponseList(ApiResponse $response, string $className)
     {
+
         if (class_exists($className)) {
             $body = '{"items":' . $response->getBody() . '}';
             $result = $this->serializer->deserialize($body, $className, 'json');

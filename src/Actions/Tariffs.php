@@ -5,12 +5,10 @@ declare(strict_types=1);
 
 namespace CdekSDK2\Actions;
 
-
-use CdekSDK2\BaseTypes\Order;
 use CdekSDK2\BaseTypes\Tariff;
 use CdekSDK2\Http\ApiResponse;
 
-class CalculateTariffCode extends ActionsWithDelete
+class Tariffs extends Action
 {
     /**
      * URL для запросов к API
@@ -24,7 +22,7 @@ class CalculateTariffCode extends ActionsWithDelete
      * @return ApiResponse
      * @throws \CdekSDK2\Exceptions\RequestException
      */
-    public function add(Tariff $tariff): ApiResponse
+    public function check(Tariff $tariff): ApiResponse
     {
 
         $params = $this->serializer->toArray($tariff);

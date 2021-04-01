@@ -20,9 +20,9 @@
     }
   ],
   "require": {
-    "php": "^8.0",
+    "php": "^7.1 || ^8.0",
     "ext-json": "*",
-    "jms/serializer": "^3.12",
+    "jms/serializer": "^1.14.0 || ^3.12",
     "nyholm/psr7": "^1.2",
     "psr/http-client": "^1.0",
     "rakit/validation": "^1.1"

@@ -12,7 +12,7 @@ use JMS\Serializer\Annotation\Type;
  * Class Order
  * @package CdekSDK2\BaseTypes
  */
-class Tariff extends Base
+class TariffWithoutCode extends Base
 {
     /**
      * Дата и время планируемой передачи заказа
@@ -37,13 +37,6 @@ class Tariff extends Base
      * @var int
      */
     public $currency = 1;
-
-    /**
-     * Код тарифа
-     * @Type("int")
-     * @var int
-     */
-    public $tariff_code;
 
     /**
      * Адрес отправления
@@ -82,7 +75,6 @@ class Tariff extends Base
     {
         parent::__construct($param);
         $this->rules = [
-            'tariff_code' => 'required|numeric',
             'from_location' => [
                 'required',
                 function ($value) {
