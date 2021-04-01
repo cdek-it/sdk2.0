@@ -46,5 +46,4 @@ class FromToLocation extends Base
      * @var string
      */
     public $address;
-
 }

@@ -26,7 +26,4 @@ class Service
      * @var float
      */
     public $sum;
-
-
-
 }

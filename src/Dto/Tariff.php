@@ -70,5 +70,4 @@ class Tariff
      * @var Error[]
      */
     public $errors;
-
 }

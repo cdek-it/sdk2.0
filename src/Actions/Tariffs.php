@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace CdekSDK2\Actions;
 
 use CdekSDK2\BaseTypes\Tariff;
@@ -17,16 +16,14 @@ class Tariffs extends Action
     public const URL = '/calculator/tariff';
 
     /**
-     * Создание заказа
+     * Расчет стоимости
      * @param Tariff $tariff
      * @return ApiResponse
      * @throws \CdekSDK2\Exceptions\RequestException
      */
     public function check(Tariff $tariff): ApiResponse
     {
-
         $params = $this->serializer->toArray($tariff);
         return $this->preparedAdd($params);
-
     }
 }
