@@ -23,7 +23,7 @@ class OfficesTest extends TestCase
      */
     private $offices;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $client = new Client(new Psr18Client());
@@ -36,7 +36,7 @@ class OfficesTest extends TestCase
         \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         $this->offices = null;
