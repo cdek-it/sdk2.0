@@ -18,7 +18,6 @@ use Symfony\Component\HttpClient\Psr18Client;
 
 class OrdersTest extends TestCase
 {
-
     /**
      * @var Orders
      */
@@ -38,7 +37,7 @@ class OrdersTest extends TestCase
         \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
     }
 
-    protected function tearDown():void
+    protected function tearDown(): void
     {
         parent::tearDown();
         $this->orders = null;

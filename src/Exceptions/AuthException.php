@@ -6,5 +6,4 @@ namespace CdekSDK2\Exceptions;
 
 class AuthException extends \Exception
 {
-
 }

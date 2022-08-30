@@ -36,7 +36,7 @@ class OfficesTest extends TestCase
         \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
     }
 
-    protected function tearDown():void
+    protected function tearDown(): void
     {
         parent::tearDown();
         $this->offices = null;
