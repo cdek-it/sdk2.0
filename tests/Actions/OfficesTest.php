@@ -60,9 +60,9 @@ class OfficesTest extends TestCase
 
         /* @var PickupPointList $pickup_list */
         $pickup_list = $client->formatResponseList($response, PickupPointList::class);
-        $this->assertEquals(1, $pickup_list->getCount());
+        $this->assertEquals(2, $pickup_list->getCount());
 
-        $this->assertCount(1, $pickup_list->filter(['type' => 'PVZ']));
+        $this->assertCount(2, $pickup_list->filter(['type' => 'PVZ']));
     }
 
     public function testParseFilter()
