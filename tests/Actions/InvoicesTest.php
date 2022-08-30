@@ -25,7 +25,7 @@ class InvoicesTest extends TestCase
     protected $invoices;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $psr18Client = new Psr18Client();
@@ -38,7 +38,7 @@ class InvoicesTest extends TestCase
         \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
     }
 
-    protected function tearDown()
+    protected function tearDown():void
     {
         parent::tearDown();
         $this->invoices = null;
