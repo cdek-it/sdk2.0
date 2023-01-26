@@ -7,7 +7,7 @@ use CdekSDK2\Http\ApiResponse;
 
 class Calculate extends Action
 {
-    public const URL = '/calculator/tarifflist';
+    public const URL = '/calculator/tariff';
 
     public function calculateByTariffCode(TariffByCode $tariffByCode): ApiResponse
     {
