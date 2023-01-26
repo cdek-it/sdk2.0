@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CdekSDK2;
 
 use CdekSDK2\Actions\Barcodes;
+use CdekSDK2\Actions\Calculate;
 use CdekSDK2\Actions\Intakes;
 use CdekSDK2\Actions\Invoices;
 use CdekSDK2\Actions\LocationCities;
@@ -83,6 +84,9 @@ class Client
      * @var LocationCities
      */
     private $cities;
+
+    /** @var Calculate */
+    private $calculate;
 
     /**
      * Client constructor.
@@ -336,5 +340,13 @@ class Client
         }
 
         throw new ParsingException('Class ' . $className . ' not found');
+    }
+
+    public function calculate(): Calculate
+    {
+        if ($this->calculate === null) {
+            $this->calculate = new Calculate($this->http_client, $this->serializer);
+        }
+        return $this->calculate;
     }
 }

@@ -8,7 +8,6 @@ use JMS\Serializer\Annotation\Type;
 
 class PickupImage
 {
-
     /**
      * Ссылка на фото
      * @Type("string")

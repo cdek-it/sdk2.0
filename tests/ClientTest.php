@@ -28,18 +28,15 @@ class ClientTest extends TestCase
      * @var Client
      */
     protected $client;
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $psr18Client = new Psr18Client();
         $this->client = new Client($psr18Client);
         \Doctrine\Common\Annotations\AnnotationReader::addGlobalIgnoredName('phan');
-
-        /** @phan-suppress-next-line PhanDeprecatedFunction */
-        \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         $this->client = null;

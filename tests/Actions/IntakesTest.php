@@ -24,7 +24,7 @@ class IntakesTest extends TestCase
     protected $intake;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $psr18Client = new Psr18Client();
@@ -32,12 +32,9 @@ class IntakesTest extends TestCase
         $client->setTest(true);
         $this->intake = $client->intakes();
         \Doctrine\Common\Annotations\AnnotationReader::addGlobalIgnoredName('phan');
-
-        /** @phan-suppress-next-line PhanDeprecatedFunction */
-        \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         $this->intake = null;

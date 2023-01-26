@@ -23,7 +23,7 @@ class OfficesTest extends TestCase
      */
     private $offices;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $client = new Client(new Psr18Client());
@@ -31,12 +31,9 @@ class OfficesTest extends TestCase
 
         $this->offices = $client->offices();
         \Doctrine\Common\Annotations\AnnotationReader::addGlobalIgnoredName('phan');
-
-        /** @phan-suppress-next-line PhanDeprecatedFunction */
-        \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         $this->offices = null;
@@ -60,9 +57,9 @@ class OfficesTest extends TestCase
 
         /* @var PickupPointList $pickup_list */
         $pickup_list = $client->formatResponseList($response, PickupPointList::class);
-        $this->assertEquals(1, $pickup_list->getCount());
+        $this->assertEquals(2, $pickup_list->getCount());
 
-        $this->assertCount(1, $pickup_list->filter(['type' => 'PVZ']));
+        $this->assertCount(2, $pickup_list->filter(['type' => 'PVZ']));
     }
 
     public function testParseFilter()

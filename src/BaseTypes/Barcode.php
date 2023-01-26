@@ -9,7 +9,6 @@ use JMS\Serializer\Annotation\Type;
 
 class Barcode extends Base
 {
-
     /**
      * Идентификатор запроса на печать штрих-кода
      * @Type("string")
