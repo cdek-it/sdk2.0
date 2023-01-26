@@ -32,9 +32,6 @@ class WebhooksTest extends TestCase
         $client->setTest(true);
         $this->webhooks = $client->webhooks();
         \Doctrine\Common\Annotations\AnnotationReader::addGlobalIgnoredName('phan');
-
-        /** @phan-suppress-next-line PhanDeprecatedFunction */
-        \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
     }
 
     protected function tearDown(): void

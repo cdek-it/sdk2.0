@@ -25,9 +25,6 @@ class LocationCitiesTest extends TestCase
 
         $this->cities = $client->cities();
         \Doctrine\Common\Annotations\AnnotationReader::addGlobalIgnoredName('phan');
-
-        /** @phan-suppress-next-line PhanDeprecatedFunction */
-        \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
     }
 
     protected function tearDown(): void
