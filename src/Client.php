@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CdekSDK2;
 
 use CdekSDK2\Actions\Barcodes;
+use CdekSDK2\Actions\Calculator;
 use CdekSDK2\Actions\Intakes;
 use CdekSDK2\Actions\Invoices;
 use CdekSDK2\Actions\LocationCities;
@@ -53,6 +54,11 @@ class Client
      * @var Intakes
      */
     private $intakes;
+
+    /**
+     * @var Calculator
+     */
+    private $calculator;
 
     /**
      * @var Webhooks
@@ -219,6 +225,17 @@ class Client
             $this->intakes = new Intakes($this->http_client, $this->serializer);
         }
         return $this->intakes;
+    }
+
+    /**
+     * @return Calculator
+     */
+    public function calculator(): Calculator
+    {
+        if ($this->calculator === null) {
+            $this->calculator = new Calculator($this->http_client, $this->serializer);
+        }
+        return $this->calculator;
     }
 
     /**

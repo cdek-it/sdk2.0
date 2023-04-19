@@ -14,8 +14,6 @@ use Nyholm\Psr7\Response;
 
 class ApiResponseTest extends \PHPUnit\Framework\TestCase
 {
-
-
     public function testConstruct()
     {
         $responsePSR7 = new Response(401, [], '{"error": "Server Error","message": "App Message"}');

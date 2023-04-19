@@ -18,7 +18,6 @@ use Symfony\Component\HttpClient\Psr18Client;
 
 class OrdersTest extends TestCase
 {
-
     /**
      * @var Orders
      */

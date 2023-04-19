@@ -61,9 +61,9 @@ class Base
     /**
      * Создание объекта из массива
      * @param array $data
-     * @return Base
+     * @return static
      */
-    public static function create($data = []): self
+    public static function create(array $data = []): self
     {
         \assert(\is_array($data));
 

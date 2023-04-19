@@ -27,7 +27,7 @@
   "require": {
     "php": "^7.1 || ^8.0",
     "ext-json": "*",
-    "jms/serializer": "^1.14.0 || ^2.0 || ^3.0",
+    "jms/serializer": "^1.14.0",
     "nyholm/psr7": "^1.2",
     "psr/http-client": "^1.0",
     "rakit/validation": "^1.1"
@@ -49,7 +49,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "v0.0.1-dev"
+      "dev-master": "v0.0.1"
     }
   },
   "autoload": {
@@ -71,7 +71,7 @@
     "psalm": "./vendor/bin/psalm -c=psalm.xml"
   },
   "support": {
-    "issues": "https://github.com/cdek-it/sdk2.0/issues",
-    "docs": "https://github.com/cdek-it/sdk2.0/blob/master/README.md"
+    "issues": "https://github.com/ttatpuot/cdek-sdk2.0/issues",
+    "docs": "https://github.com/ttatpuot/cdek-sdk2.0/blob/master/README.md"
   }
 }

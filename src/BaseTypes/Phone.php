@@ -13,7 +13,6 @@ use JMS\Serializer\Annotation\Type;
  */
 class Phone extends Base
 {
-
     /**
      * Номер телефона
      * @Type("string")
