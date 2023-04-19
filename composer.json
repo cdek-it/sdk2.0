@@ -49,7 +49,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "v0.0.2"
+      "dev-master": "v0.0.1-dev"
     }
   },
   "autoload": {
