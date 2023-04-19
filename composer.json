@@ -1,5 +1,5 @@
 {
-  "name": "ttatpuot/sdk2.0",
+  "name": "ttatpuot/cdek-sdk2.0",
   "type": "library",
   "description": "PHP SDK для API v2.0 от сервиса интеграции компании СДЭК",
   "keywords": [
