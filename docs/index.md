@@ -67,6 +67,7 @@ $cdek->setTest(true);
 | [Получение cписка городов](#cities_getFiltered)                           | `cities()->getFiltered()`  |
 | [Получение cписка регионов](#regions_getFiltered)                         | `regions()->getFiltered()` |
 | [Калькулятор. Расчет по доступным тарифам](#calculator_get)               | `calculator()->add()`      |
+| [Калькулятор. Расчет по коду тарифа](#calculator_get)                     | `calculator()->add()`      |
 
 
 >***И список методов, которые в разработке:***
@@ -682,3 +683,88 @@ if ($result->isOk()) {
 В результате данного запроса будет отображены два региона, которые находятся в России.
 
 Доступные фильтры описаны в константе `\CdekSDK2\Actions\LocationRegions::FILTER` 
+
+### Калькулятор. Расчет по доступным тарифам
+
+```php
+$tariff = CdekSDK2\BaseTypes\Tarifflist::create([]);
+$tariff->date = (new \DateTime())->format(\DateTime::ISO8601);
+$tariff->type = Tarifflist::TYPE_ECOMMERCE;
+$tariff->currecy = Currencies::RUBLE;
+$tariff->lang = Tarifflist::LANG_RUS;
+$tariff->from_location = Location::create([
+    'address' => 'Кутузовский проспект 1-1',
+    'code' => 137,
+    'country_code' => 'RU'
+]);
+$tariff->to_location = Location::create([
+    'address' => 'Ленина 23-1',
+    'code' => 270,
+    'country_code' => 'RU'
+]);
+$tariff->packages = [
+    Package::create([
+        'weight' => 1000,
+        'length' => 30,
+        'width' => 20,
+        'height' => 10,
+    ])
+];
+
+$result = $cdek->calculator()->add($tariff);
+if ($result->hasErrors()) {
+    // Обрабатываем ошибки
+}
+
+if ($result->isOk()) {
+    //Запрос успешно выполнился
+    $response = $cdek->formatResponseList($result, \CdekSDK2\Dto\TariffList::class);
+    //В $response будет объект \CdekSDK2\Dto\TariffList::class
+}
+```
+В результате данного запроса будет возвращено все возможные тарифы между двумя локациями с указанными размерами посылки (или нескольких посылок)
+
+### Калькулятор. Расчет по доступным тарифам
+
+Процесс похож на расчёт по доступным тарифам, за исключением указания номера конкретного тарифа и возвращаемого результата
+
+```php
+$tariff = CdekSDK2\BaseTypes\Tariff::create([]);
+$tariff->date = (new \DateTime())->format(\DateTime::ISO8601);
+$tariff->type = Tarifflist::TYPE_ECOMMERCE;
+$tariff->currecy = Currencies::RUBLE;
+$tariff->lang = Tarifflist::LANG_RUS;
+$tariff->tariff_code = 139; //Номер тарифа: Посылка дверь-дверь
+//Номера тарифов есть в документации к API: https://api-docs.cdek.ru/63345430.html
+$tariff->from_location = Location::create([
+    'address' => 'Кутузовский проспект 1-1',
+    'code' => 137,
+    'country_code' => 'RU'
+]);
+$tariff->to_location = Location::create([
+    'address' => 'Ленина 23-1',
+    'code' => 270,
+    'country_code' => 'RU'
+]);
+$tariff->packages = [
+    Package::create([
+        'weight' => 1000,
+        'length' => 30,
+        'width' => 20,
+        'height' => 10,
+    ])
+];
+
+$result = $cdek->calculator()->add($tariff);
+if ($result->hasErrors()) {
+    // Обрабатываем ошибки
+}
+
+if ($result->isOk()) {
+    //Запрос успешно выполнился
+    $response = $cdek->formatBaseResponse($result, \CdekSDK2\Dto\Tariff::class);
+    //В $response будет объект \CdekSDK2\Dto\Tariff::class
+}
+```
+
+В результате данного запроса будет возвращено все возможные тарифы между двумя локациями с указанными размерами посылки (или нескольких посылок)

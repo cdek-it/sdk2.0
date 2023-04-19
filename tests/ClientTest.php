@@ -14,9 +14,12 @@ use CdekSDK2\Actions\Offices;
 use CdekSDK2\Actions\Orders;
 use CdekSDK2\Actions\Webhooks;
 use CdekSDK2\BaseTypes\Invoice;
+use CdekSDK2\BaseTypes\Tariff;
 use CdekSDK2\Constants;
 use CdekSDK2\Dto\RegionList;
 use CdekSDK2\Client;
+use CdekSDK2\Dto\TariffList;
+use CdekSDK2\Dto\TariffListItem;
 use CdekSDK2\Exceptions\ParsingException;
 use CdekSDK2\Http\ApiResponse;
 use PHPUnit\Framework\TestCase;
@@ -144,6 +147,21 @@ class ClientTest extends TestCase
         $this->assertInstanceOf(Invoice::class, $invoice_response->entity);
     }
 
+    public function testFormatResponseTariff()
+    {
+        $response = $this->createMock(ApiResponse::class);
+        $response->method('getBody')
+            ->willReturn('{"delivery_sum":1315.0,"period_min":8,"period_max":12,"calendar_min":8,"calendar_max":12,
+            "weight_calc":3000,"services":[{"code":"INSURANCE","sum":0.00}],"total_sum":1578.0,"currency":"RUB"}');
+
+        $tariff = $this->client->formatBaseResponse($response, \CdekSDK2\Dto\Tariff::class);
+        $this->assertInstanceOf(\CdekSDK2\Dto\Tariff::class, $tariff);
+
+        foreach ($tariff->services as $service) {
+            $this->assertInstanceOf(\CdekSDK2\Dto\TariffService::class, $service);
+        }
+    }
+
     public function testFormatResponseException()
     {
         $this->expectException(ParsingException::class);
@@ -153,13 +171,29 @@ class ClientTest extends TestCase
         $hook = $this->client->formatResponse($response, 'SomeNotFoundClass');
     }
 
-    public function testFormatResponseList()
+    public function testFormatResponseRegionList()
     {
         $response = $this->createMock(ApiResponse::class);
         $response->method('getBody')
             ->willReturn('[{"country_code":"DE","region":"Нижняя Саксония","region_code":"641","country":"Германия"}]');
         $region_list = $this->client->formatResponseList($response, RegionList::class);
         $this->assertInstanceOf(RegionList::class, $region_list);
+    }
+
+    public function testFormatResponseTarifflist()
+    {
+        $response = $this->createMock(ApiResponse::class);
+        $response->method('getBody')
+            ->willReturn('{"tariff_codes":[{"tariff_code":62,"tariff_name":"Магистральный экспресс склад-склад",
+            "tariff_description":"","delivery_mode":4,"delivery_sum":1710.0,"period_min":8,"period_max":12,
+            "calendar_min":8,"calendar_max":12}]}');
+        $tariffList = $this->client->formatResponseList($response, TariffList::class);
+
+        $this->assertInstanceOf(TariffList::class, $tariffList);
+
+        foreach ($tariffList->tariff_codes as $tariff) {
+            $this->assertInstanceOf(TariffListItem::class, $tariff);
+        }
     }
 
     public function testFormatResponseListException()

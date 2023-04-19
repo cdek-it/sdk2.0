@@ -15,6 +15,8 @@ use CdekSDK2\Actions\Orders;
 use CdekSDK2\Actions\Webhooks;
 use CdekSDK2\Dto\CityList;
 use CdekSDK2\Dto\RegionList;
+use CdekSDK2\Dto\Tariff;
+use CdekSDK2\Dto\TariffList;
 use CdekSDK2\Dto\WebHookList;
 use CdekSDK2\Dto\PickupPointList;
 use CdekSDK2\Dto\Response;
@@ -339,17 +341,38 @@ class Client
     }
 
     /**
+     * Пока что этот метод возвращет только Tariff, так как нужен только для одного запроса
      * @param ApiResponse $response
      * @param string $className
-     * @return CityList|RegionList|PickupPointList|WebHookList
+     * @return Tariff
+     * @throws \Exception
+     */
+    public function formatBaseResponse(ApiResponse $response, string $className): Tariff
+    {
+        if (class_exists($className)) {
+            return $this->serializer->deserialize($response->getBody(), $className, 'json');
+        }
+
+        throw new ParsingException('Class ' . $className . ' not found');
+    }
+
+    /**
+     * @param ApiResponse $response
+     * @param string $className
+     * @return CityList|RegionList|PickupPointList|WebHookList|TariffList
      * @throws \Exception
      */
     public function formatResponseList(ApiResponse $response, string $className)
     {
         if (class_exists($className)) {
-            $body = '{"items":' . $response->getBody() . '}';
-            $result = $this->serializer->deserialize($body, $className, 'json');
-            return $result;
+            if ((new \ReflectionClass($className))->getShortName() == 'TariffList') {
+                $result = $this->serializer->deserialize($response->getBody(), $className, 'json');
+                return $result;
+            } else {
+                $body = '{"items":' . $response->getBody() . '}';
+                $result = $this->serializer->deserialize($body, $className, 'json');
+                return $result;
+            }
         }
 
         throw new ParsingException('Class ' . $className . ' not found');
