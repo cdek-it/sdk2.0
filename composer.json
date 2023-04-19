@@ -1,5 +1,5 @@
 {
-  "name": "cdek-it/sdk2.0",
+  "name": "TTATPuOT/sdk2.0",
   "type": "library",
   "description": "PHP SDK для API v2.0 от сервиса интеграции компании СДЭК",
   "keywords": [
@@ -17,12 +17,17 @@
       "name": "Viktor Chizhekov",
       "homepage": "https://github.com/ihomyak",
       "role": "Creator"
+    },
+    {
+      "name": "Anton Neverov",
+      "homepage": "https://github.com/TTATPuOT",
+      "role": "Contributor"
     }
   ],
   "require": {
-    "php": "^7.1",
+    "php": "^7.1 || ^8.0",
     "ext-json": "*",
-    "jms/serializer": "^1.14.0",
+    "jms/serializer": "^1.14.0 || ^2.0 || ^3.0",
     "nyholm/psr7": "^1.2",
     "psr/http-client": "^1.0",
     "rakit/validation": "^1.1"
