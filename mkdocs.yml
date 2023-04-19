@@ -4,7 +4,7 @@
 site_name: sdk2.0
 theme: readthedocs
 lang: ru
-repo_url: https://github.com/cdek-it/sdk2.0
+repo_url: https://github.com/ttatpuot/cdek-sdk2.0
 nav:
   - CDEK-IT SDK2.0: index.md
 markdown_extensions:

@@ -1,8 +1,16 @@
-# SDK2.0 для сервиса интеграции СДЭК
-[![Build Status](https://scrutinizer-ci.com/g/cdek-it/sdk2.0/badges/build.png?b=master)](https://scrutinizer-ci.com/g/cdek-it/sdk2.0/build-status/master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cdek-it/sdk2.0/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cdek-it/sdk2.0/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/cdek-it/sdk2.0/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/cdek-it/sdk2.0/?branch=master)
-![Packagist](https://img.shields.io/packagist/l/cdek-it/sdk2.0)
+# Рабочий форк SDK2.0 для сервиса интеграции СДЭК
+[![Packagist](https://img.shields.io/packagist/v/ttatpuot/cdek-sdk2.0)](https://packagist.org/packages/ttatpuot/cdek-sdk2.0)
+
+Это рабочий и (пока что) поддерживаемый форк [cdek-it/sdk2.0](https://github.com/cdek-it/sdk2.0).
+
+На данный момент исправлены трудности оригинальной библиотеки:
+- Добавлена поддержка PHP 8.0+
+- Добавлен метод `Client::calculator()` для расчёта стоимости доставки [по доступным тарифам](https://api-docs.cdek.ru/63345519.html)
+- Примеры кода лучше всего смотреть [в тестах](https://github.com/TTATPuOT/cdek-sdk2.0/tree/master/tests/Actions), так как документация может не успевать за кодом.
+
+Так же доступны все функци оригинальной библиотеки. Так как это форк, в своём проекте можно просто заменить зависимость на `ttatpuot/cdek-sdk2.0` и актуальную версию. Обратная совместимость сохранится.
+
+---
 
 Реализация API v2.0 для [интеграции со службой доставки СДЭК](https://www.cdek.ru/clients/integrator.html).
 Данная SDK поможет быстрее внедрить в свой проект взаимодействие со службой доставки СДЭК.
@@ -28,7 +36,7 @@
 
 ***
 ### Требования
-Требования — минимальны. Нужен PHP 7.1 или выше.
+Требования — минимальны. Нужен PHP 7.1/8.0 или выше.
 
 Данный SDK использует спецификацию [PSR-18 (HTTP-client)](https://www.php-fig.org/psr/psr-18/). 
 Это значит в качестве HTTP-клиента можно использовать любой - клиент, поддерживающий данную спецификацию.
@@ -40,14 +48,14 @@
 Установка осуществляется с помощью менеджера пакетов Composer
 
 ```bash
-composer require cdek-it/sdk2.0
+composer require ttatpuot/cdek-sdk2.0
 ```
 
 
 ***
 ### Документация
 
-Полная документация располагается [тут](https://github.com/cdek-it/sdk2.0/blob/master/docs/index.md)
+[Полная документация располагается тут](https://github.com/ttatpuot/cdek-sdk2.0/blob/master/docs/index.md)
 
 
 ***

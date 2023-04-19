@@ -6,9 +6,9 @@
 ## Установка  {: #install }
 
 ```bash
-composer require cdek-it/sdk2.0
+composer require ttatpuot/cdek-sdk2.0
 ```
-Требования — минимальны. Нужен PHP 7.0 или выше.
+Требования — минимальны. Нужен PHP 7.1/8.0 или выше.
 
 
 ## Инициализация {: #initialize }
@@ -42,30 +42,31 @@ $cdek->setTest(true);
 
 Перечень основных методов класса `Client` ниже.
 
-| Действие| Название метода |
-| ----- | -------------- |
-| [Авторизация](#authorize) | `authorize` |
-| [Создание заказа](#orders_add) | `orders()->add()` |
-| [Получение информации по заказу](#orders_get) | `orders()->get()` |
-| [Удаление заказа](#orders_delete) | `orders()->delete()` |
-| [Подписка на вебхуки](#webhooks_add) | `webhooks()->add()` |
-| [Получение информации о подписке на вебхуки](#webhooks_get) | `webhooks()->get()` |
-| [Получение списка всех подписок на вебхуки](#webhooks_list) | `webhooks()->list()` |
-| [Удаление подписки на вебхуки](#webhooks_delete) | `webhooks()->delete()` |
-| [Получение информации из пришедших вебхуков](#webhooks_parse) | `webhooks()->parse()` |
-| [Создание заявки на вызов курьера](#intakes_add) | `intakes()->add()` |
-| [Получение информации о заявке на вызов курьера](#intakes_get) | `intakes()->get()` |
-| [Удаление заявки на вызов курьера](#intakes_delete) | `intakes()->delete()` |
-| [Получение списка ПВЗ](#offices_get) | `offices()->get()` |
-| [Получение списка ПВЗ с применением фильтра](#offices_getFiltered) | `offices()->getFiltered()` |
-| [Создание запроса на формирование печатной формы накладной](#invoice_add) | `invoice()->add()` |
-| [Получение информации о состоянии печатной формы накладной](#invoice_get) | `invoice()->get()` |
-| [Скачивание печатной формы накладной](#invoice_download) | `invoice()->download()` |
-| [Создание запроса на формирование печатной формы ШК-места](#barcodes_add) | `barcodes()->add()` |
-| [Получение информации о состоянии печатной формы ШК-места](#barcodes_get) | `barcodes()->get()` |
-| [Скачивание печатной формы ШК-места](#barcodes_download) | `barcodes()->download()` |
-| [Получение cписка городов](#cities_getFiltered) | `cities()->getFiltered()` |
-| [Получение cписка регионов](#regions_getFiltered) | `regions()->getFiltered()` |
+| Действие                                                                  | Название метода            |
+|---------------------------------------------------------------------------|----------------------------|
+| [Авторизация](#authorize)                                                 | `authorize`                |
+| [Создание заказа](#orders_add)                                            | `orders()->add()`          |
+| [Получение информации по заказу](#orders_get)                             | `orders()->get()`          |
+| [Удаление заказа](#orders_delete)                                         | `orders()->delete()`       |
+| [Подписка на вебхуки](#webhooks_add)                                      | `webhooks()->add()`        |
+| [Получение информации о подписке на вебхуки](#webhooks_get)               | `webhooks()->get()`        |
+| [Получение списка всех подписок на вебхуки](#webhooks_list)               | `webhooks()->list()`       |
+| [Удаление подписки на вебхуки](#webhooks_delete)                          | `webhooks()->delete()`     |
+| [Получение информации из пришедших вебхуков](#webhooks_parse)             | `webhooks()->parse()`      |
+| [Создание заявки на вызов курьера](#intakes_add)                          | `intakes()->add()`         |
+| [Получение информации о заявке на вызов курьера](#intakes_get)            | `intakes()->get()`         |
+| [Удаление заявки на вызов курьера](#intakes_delete)                       | `intakes()->delete()`      |
+| [Получение списка ПВЗ](#offices_get)                                      | `offices()->get()`         |
+| [Получение списка ПВЗ с применением фильтра](#offices_getFiltered)        | `offices()->getFiltered()` |
+| [Создание запроса на формирование печатной формы накладной](#invoice_add) | `invoice()->add()`         |
+| [Получение информации о состоянии печатной формы накладной](#invoice_get) | `invoice()->get()`         |
+| [Скачивание печатной формы накладной](#invoice_download)                  | `invoice()->download()`    |
+| [Создание запроса на формирование печатной формы ШК-места](#barcodes_add) | `barcodes()->add()`        |
+| [Получение информации о состоянии печатной формы ШК-места](#barcodes_get) | `barcodes()->get()`        |
+| [Скачивание печатной формы ШК-места](#barcodes_download)                  | `barcodes()->download()`   |
+| [Получение cписка городов](#cities_getFiltered)                           | `cities()->getFiltered()`  |
+| [Получение cписка регионов](#regions_getFiltered)                         | `regions()->getFiltered()` |
+| [Калькулятор. Расчет по доступным тарифам](#calculator_get)               | `calculator()->add()`      |
 
 
 >***И список методов, которые в разработке:***
