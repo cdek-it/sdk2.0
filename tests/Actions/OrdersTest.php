@@ -14,6 +14,7 @@ use CdekSDK2\BaseTypes\Order;
 use CdekSDK2\Client;
 use CdekSDK2\Http\ApiResponse;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\Psr18Client;
 
 class OrdersTest extends TestCase
@@ -27,7 +28,10 @@ class OrdersTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $psr18Client = new Psr18Client();
+        $psr18Client = new Psr18Client(HttpClient::create([
+            'verify_peer' => false,
+            'verify_host' => false,
+        ]));
         $client = new Client($psr18Client);
         $client->setTest(true);
         $this->orders = $client->orders();

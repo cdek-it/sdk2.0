@@ -16,6 +16,7 @@ use CdekSDK2\Client;
 use CdekSDK2\Constants;
 use CdekSDK2\Http\ApiResponse;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\Psr18Client;
 
 class WebhooksTest extends TestCase
@@ -28,7 +29,11 @@ class WebhooksTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $client = new Client(new Psr18Client());
+        $psr18Client = new Psr18Client(HttpClient::create([
+            'verify_peer' => false,
+            'verify_host' => false,
+        ]));
+        $client = new Client($psr18Client);
         $client->setTest(true);
         $this->webhooks = $client->webhooks();
         \Doctrine\Common\Annotations\AnnotationReader::addGlobalIgnoredName('phan');

@@ -23,6 +23,7 @@ use CdekSDK2\Dto\TariffListItem;
 use CdekSDK2\Exceptions\ParsingException;
 use CdekSDK2\Http\ApiResponse;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\Psr18Client;
 
 class ClientTest extends TestCase
@@ -34,7 +35,10 @@ class ClientTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $psr18Client = new Psr18Client();
+        $psr18Client = new Psr18Client(HttpClient::create([
+            'verify_peer' => false,
+            'verify_host' => false,
+        ]));
         $this->client = new Client($psr18Client);
         \Doctrine\Common\Annotations\AnnotationReader::addGlobalIgnoredName('phan');
 
