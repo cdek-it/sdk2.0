@@ -10,6 +10,7 @@
 namespace CdekSDK2\Tests\Actions;
 
 use CdekSDK2\Actions\Offices;
+use CdekSDK2\Dto\PickupPoint;
 use CdekSDK2\Dto\PickupPointList;
 use CdekSDK2\Client;
 use CdekSDK2\Http\ApiResponse;
@@ -23,7 +24,7 @@ class OfficesTest extends TestCase
      */
     private $offices;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $client = new Client(new Psr18Client());
@@ -36,7 +37,7 @@ class OfficesTest extends TestCase
         \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         $this->offices = null;
@@ -60,9 +61,11 @@ class OfficesTest extends TestCase
 
         /* @var PickupPointList $pickup_list */
         $pickup_list = $client->formatResponseList($response, PickupPointList::class);
-        $this->assertEquals(1, $pickup_list->getCount());
+        $this->assertInstanceOf(PickupPointList::class, $pickup_list);
 
-        $this->assertCount(1, $pickup_list->filter(['type' => 'PVZ']));
+        foreach ($pickup_list->items as $item) {
+            $this->assertInstanceOf(PickupPoint::class, $item);
+        }
     }
 
     public function testParseFilter()

@@ -1,5 +1,8 @@
 # Рабочий форк SDK2.0 для сервиса интеграции СДЭК
 [![Packagist](https://img.shields.io/packagist/v/ttatpuot/cdek-sdk2.0)](https://packagist.org/packages/ttatpuot/cdek-sdk2.0)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/TTATPuOT/cdek-sdk2.0/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/TTATPuOT/cdek-sdk2.0/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/TTATPuOT/cdek-sdk2.0/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/TTATPuOT/cdek-sdk2.0/?branch=master)
+![License](https://img.shields.io/github/license/ttatpuot/cdek-sdk2.0)
 
 Это рабочий и (пока что) поддерживаемый форк [cdek-it/sdk2.0](https://github.com/cdek-it/sdk2.0).
 
