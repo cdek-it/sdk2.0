@@ -57,7 +57,11 @@ class OfficesTest extends TestCase
 
     public function testGetFiltered()
     {
-        $client = new Client(new Psr18Client());
+        $psr18Client = new Psr18Client(HttpClient::create([
+            'verify_peer' => false,
+            'verify_host' => false,
+        ]));
+        $client = new Client($psr18Client);
         $client->setTest(true);
         $this->offices = $client->offices();
 
