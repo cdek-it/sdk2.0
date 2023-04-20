@@ -41,7 +41,7 @@
     "phpstan/phpstan": ">=0.10",
     "phpunit/phpunit": "^8.5",
     "squizlabs/php_codesniffer": "*",
-    "symfony/http-client": "^4.3",
+    "symfony/http-client": "^5.4.22",
     "vimeo/psalm": ">=3.0.16",
     "doctrine/annotations": "^1.14.3"
   },
