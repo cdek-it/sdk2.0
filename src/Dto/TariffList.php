@@ -14,11 +14,4 @@ class TariffList
      * @var TariffListItem[]
      */
     public $tariff_codes;
-
-    /**
-     * Список ошибок
-     * @Type("array<CdekSDK2\Dto\TariffListErrorItem>")
-     * @var TariffListErrorItem[]
-     */
-    public $errors;
 }

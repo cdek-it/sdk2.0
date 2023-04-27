@@ -13,6 +13,7 @@ use CdekSDK2\Actions\Offices;
 use CdekSDK2\Dto\PickupPoint;
 use CdekSDK2\Dto\PickupPointList;
 use CdekSDK2\Client;
+use CdekSDK2\Dto\PickupPointLocation;
 use CdekSDK2\Http\ApiResponse;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\HttpClient;
@@ -74,6 +75,7 @@ class OfficesTest extends TestCase
 
         foreach ($pickup_list->items as $item) {
             $this->assertInstanceOf(PickupPoint::class, $item);
+            $this->assertInstanceOf(PickupPointLocation::class, $item->location);
         }
     }
 

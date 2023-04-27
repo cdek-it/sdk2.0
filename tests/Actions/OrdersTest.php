@@ -106,11 +106,13 @@ class OrdersTest extends TestCase
     {
         $response = $this->orders->delete('orders');
         $this->assertInstanceOf(ApiResponse::class, $response);
+        $this->assertTrue($response->hasErrors());
     }
 
     public function testGet()
     {
         $response = $this->orders->get('orders');
         $this->assertInstanceOf(ApiResponse::class, $response);
+        $this->assertTrue($response->hasErrors());
     }
 }

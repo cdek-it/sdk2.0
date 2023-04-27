@@ -36,5 +36,8 @@ class Offices extends Action
         'weight_min' => '',
         'lang' => '',
         'take_only' => '',
+        'is_handout' => '',
+        'is_reception' => '',
+        'fias_guid' => '',
     ];
 }

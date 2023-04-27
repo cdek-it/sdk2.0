@@ -50,22 +50,31 @@ class ApiResponse
                 $response->hasHeader('Content-type') &&
                 strpos(implode(',', $response->getHeader('Content-type')), 'json') !== false
             ) {
-                $this->body = (string)$response->getBody()->getContents();
+                $this->body = $response->getBody()->getContents();
             } else {
                 $this->body = (string)$response->getBody();
             }
 
-            if ($this->status > 299) {
-                $decode_body = json_decode($this->body, true);
-                if (isset($decode_body['error'])) {
-                    $this->errors[] = [
-                        'code' => $decode_body['error'],
-                        'message' => $decode_body['error_description'] ?? $decode_body['message'] ?? 'unknown_error'
-                    ];
-                } elseif (isset($decode_body['errors'])) {
-                    $this->errors = $decode_body['errors'];
+
+            $decode_body = json_decode($this->body, true);
+            $this->addErrorsFromArrayIfExists($decode_body);
+            if (isset($decode_body['requests']) && is_array($decode_body['requests'])) {
+                foreach ($decode_body['requests'] as $request) {
+                    $this->addErrorsFromArrayIfExists($request);
                 }
             }
+        }
+    }
+
+    private function addErrorsFromArrayIfExists(?array $array): void
+    {
+        if (isset($array['error'])) {
+            $this->errors[] = [
+                'code' => $array['error'],
+                'message' => $array['error_description'] ?? $array['message'] ?? 'unknown_error'
+            ];
+        } elseif (isset($array['errors'])) {
+            $this->errors = array_merge($this->errors, $array['errors']);
         }
     }
 

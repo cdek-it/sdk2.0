@@ -2,37 +2,19 @@
 
 declare(strict_types=1);
 
-namespace CdekSDK2\BaseTypes;
+namespace CdekSDK2\Dto;
 
 use JMS\Serializer\Annotation\Type;
 
-/**
- * Class Location
- * @package CdekSDK2\BaseTypes
- */
-class Location extends Base
+class PickupPointLocation
 {
     /**
-     * Код локации из справочника СДЭК
-     * @Type("int")
-     * @var int
+     * Код населенного пункта СДЭК (используется в выдаче списка офисов)
+     * @Type("integer")
+     * @var integer
      */
-    public $code;
+    public $city_code;
 
-    /**
-     * Название района региона
-     * @Type("string")
-     * @var string
-     */
-    public $sub_region;
-
-    /**
-     * Код КЛАДР
-     * @Type("string")
-     * @var string
-     * @deprecated
-     */
-    public $kladr_code;
     /**
      * Уникальный идентификатор ФИАС
      * @Type("string")
@@ -103,26 +85,4 @@ class Location extends Base
      * @var string
      */
     public $address_full;
-
-    /**
-     * Location constructor.
-     * @param array $param
-     */
-    public function __construct(array $param = [])
-    {
-        parent::__construct($param);
-        $this->rules = [
-            'address' => 'required',
-            'code' => 'numeric',
-            'fias_guid' => 'alpha',
-            'postal_code' => 'alpha',
-            'longitude' => 'numeric',
-            'latitude' => 'numeric',
-            'country_code' => 'alpha:2',
-            'region' => 'alpha',
-            'sub_region' => 'alpha',
-            'city' => 'alpha',
-            'kladr_code' => 'alpha',
-        ];
-    }
 }

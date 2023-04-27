@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CdekSDK2\Dto;
 
-use CdekSDK2\BaseTypes\Location;
 use CdekSDK2\BaseTypes\Phone;
 use JMS\Serializer\Annotation\Type;
 
@@ -30,8 +29,8 @@ class PickupPoint
 
     /**
      * Адрес ПВЗ
-     * @Type("CdekSDK2\BaseTypes\Location")
-     * @var Location
+     * @Type("CdekSDK2\Dto\PickupPointLocation")
+     * @var PickupPointLocation
      */
     public $location;
 

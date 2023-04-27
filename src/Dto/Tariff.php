@@ -70,11 +70,4 @@ class Tariff
      * @var TariffService[]
      */
     public $services;
-
-    /**
-     * Список ошибок
-     * @Type("array<CdekSDK2\Dto\TariffListErrorItem>")
-     * @var TariffListErrorItem[]
-     */
-    public $errors;
 }
