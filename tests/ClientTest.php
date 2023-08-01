@@ -15,11 +15,13 @@ use CdekSDK2\Actions\Orders;
 use CdekSDK2\Actions\Webhooks;
 use CdekSDK2\BaseTypes\Invoice;
 use CdekSDK2\Constants;
+use CdekSDK2\Dto\OrderInfo;
 use CdekSDK2\Dto\RegionList;
 use CdekSDK2\Client;
 use CdekSDK2\Dto\TariffList;
 use CdekSDK2\Dto\TariffListItem;
 use CdekSDK2\Exceptions\ParsingException;
+use CdekSDK2\Exceptions\RequestException;
 use CdekSDK2\Http\ApiResponse;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\HttpClient;
@@ -146,6 +148,7 @@ class ClientTest extends TestCase
         . '"url":"","statuses":[{"code":"ACCEPTED","name":"Принят","date_time":"2020-02-11T17:52:45+0700"},'
         . '{"code":"PROCESSING","name":"Формируется","date_time":"2020-02-11T17:52:45+0700"}]},'
         . '"requests":[{"errors":[],"warnings":[]}]}');
+        $response->method('isOk')->willReturn(true);
         $invoice_response = $this->client->formatResponse($response, Invoice::class);
         $this->assertInstanceOf(Invoice::class, $invoice_response->entity);
     }
@@ -156,6 +159,7 @@ class ClientTest extends TestCase
         $response->method('getBody')
             ->willReturn('{"delivery_sum":1315.0,"period_min":8,"period_max":12,"calendar_min":8,"calendar_max":12,
             "weight_calc":3000,"services":[{"code":"INSURANCE","sum":0.00}],"total_sum":1578.0,"currency":"RUB"}');
+        $response->method('isOk')->willReturn(true);
 
         $tariff = $this->client->formatBaseResponse($response, \CdekSDK2\Dto\Tariff::class);
         $this->assertInstanceOf(\CdekSDK2\Dto\Tariff::class, $tariff);
@@ -171,7 +175,22 @@ class ClientTest extends TestCase
         $response = $this->createMock(ApiResponse::class);
         $response->method('getBody')
             ->willReturn('{"type":"ORDER_STATUS","uuid":"c7e28f79fe39","url":"my_url"}');
-        $hook = $this->client->formatResponse($response, 'SomeNotFoundClass');
+        $response->method('isOk')->willReturn(true);
+        $this->client->formatResponse($response, 'SomeNotFoundClass');
+    }
+
+    public function testResponseContainsErrorException()
+    {
+        $this->expectException(RequestException::class);
+        $response = $this->createMock(ApiResponse::class);
+        $response->method('getErrors')
+            ->willReturn([
+                [
+                    'code' => 'code',
+                    'message' => 'message'
+                ]
+            ]);
+        $this->client->formatResponse($response, OrderInfo::class);
     }
 
     public function testFormatResponseRegionList()
@@ -179,6 +198,7 @@ class ClientTest extends TestCase
         $response = $this->createMock(ApiResponse::class);
         $response->method('getBody')
             ->willReturn('[{"country_code":"DE","region":"Нижняя Саксония","region_code":"641","country":"Германия"}]');
+        $response->method('isOk')->willReturn(true);
         $region_list = $this->client->formatResponseList($response, RegionList::class);
         $this->assertInstanceOf(RegionList::class, $region_list);
     }
@@ -190,6 +210,7 @@ class ClientTest extends TestCase
             ->willReturn('{"tariff_codes":[{"tariff_code":62,"tariff_name":"Магистральный экспресс склад-склад",
             "tariff_description":"","delivery_mode":4,"delivery_sum":1710.0,"period_min":8,"period_max":12,
             "calendar_min":8,"calendar_max":12}]}');
+        $response->method('isOk')->willReturn(true);
         $tariffList = $this->client->formatResponseList($response, TariffList::class);
 
         $this->assertInstanceOf(TariffList::class, $tariffList);
@@ -205,6 +226,7 @@ class ClientTest extends TestCase
         $response = $this->createMock(ApiResponse::class);
         $response->method('getBody')
             ->willReturn('[{"country_code":"DE","region":"Нижняя Саксония","region_code":"641","country":"Германия"}]');
-        $hook = $this->client->formatResponseList($response, 'AnotherClass');
+        $response->method('isOk')->willReturn(true);
+        $this->client->formatResponseList($response, 'AnotherClass');
     }
 }

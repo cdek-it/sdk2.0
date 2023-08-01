@@ -22,6 +22,7 @@ use CdekSDK2\Dto\PickupPointList;
 use CdekSDK2\Dto\Response;
 use CdekSDK2\Exceptions\AuthException;
 use CdekSDK2\Exceptions\ParsingException;
+use CdekSDK2\Exceptions\RequestException;
 use CdekSDK2\Http\Api;
 use CdekSDK2\Http\ApiResponse;
 use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
@@ -325,19 +326,21 @@ class Client
      */
     public function formatResponse(ApiResponse $response, string $className): Response
     {
-        if (class_exists($className)) {
-            /* @var $result Response */
-            $result = $this->serializer->deserialize($response->getBody(), Response::class, 'json');
-            $result->entity = null;
+        $this->checkResponseIsOkOrThrowError($response);
 
-            $array_response = json_decode($response->getBody(), true);
-            $entity = $this->serializer->deserialize(json_encode($array_response['entity']), $className, 'json');
-            $result->entity = $entity;
-
-            return $result;
+        if (!class_exists($className)) {
+            throw new ParsingException('Class ' . $className . ' not found');
         }
 
-        throw new ParsingException('Class ' . $className . ' not found');
+        /* @var $result Response */
+        $result = $this->serializer->deserialize($response->getBody(), Response::class, 'json');
+        $result->entity = null;
+
+        $array_response = json_decode($response->getBody(), true);
+        $entity = $this->serializer->deserialize(json_encode($array_response['entity']), $className, 'json');
+        $result->entity = $entity;
+
+        return $result;
     }
 
     /**
@@ -349,11 +352,13 @@ class Client
      */
     public function formatBaseResponse(ApiResponse $response, string $className): Tariff
     {
-        if (class_exists($className)) {
-            return $this->serializer->deserialize($response->getBody(), $className, 'json');
+        $this->checkResponseIsOkOrThrowError($response);
+
+        if (!class_exists($className)) {
+            throw new ParsingException('Class ' . $className . ' not found');
         }
 
-        throw new ParsingException('Class ' . $className . ' not found');
+        return $this->serializer->deserialize($response->getBody(), $className, 'json');
     }
 
     /**
@@ -364,17 +369,30 @@ class Client
      */
     public function formatResponseList(ApiResponse $response, string $className)
     {
-        if (class_exists($className)) {
-            if ((new \ReflectionClass($className))->getShortName() == 'TariffList') {
-                $result = $this->serializer->deserialize($response->getBody(), $className, 'json');
-                return $result;
-            } else {
-                $body = '{"items":' . $response->getBody() . '}';
-                $result = $this->serializer->deserialize($body, $className, 'json');
-                return $result;
-            }
+        $this->checkResponseIsOkOrThrowError($response);
+
+        if (!class_exists($className)) {
+            throw new ParsingException('Class ' . $className . ' not found');
         }
 
-        throw new ParsingException('Class ' . $className . ' not found');
+        if ((new \ReflectionClass($className))->getShortName() == 'TariffList') {
+            return $this->serializer->deserialize($response->getBody(), $className, 'json');
+        }
+
+        $body = '{"items":' . $response->getBody() . '}';
+        return $this->serializer->deserialize($body, $className, 'json');
+    }
+
+    /**
+     * @throws RequestException
+     */
+    protected function checkResponseIsOkOrThrowError(ApiResponse $response): void
+    {
+        if ($response->isOk()) {
+            return;
+        }
+
+        $errors = $response->getErrors();
+        throw new RequestException($errors[0]['message'], $response->getStatus());
     }
 }

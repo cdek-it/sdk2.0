@@ -17,7 +17,7 @@ composer require ttatpuot/cdek-sdk2.0
 $client = new Psr18Client();
 $cdek = new \CdekSDK2\Client($client, 'account', 'secure');
 ```
-***Важно: Доступы к сервису интеграции (account и secure) необходимо [запросить по почте у СДЭК](mailto=integrator@cdek.ru).*** 
+***Важно: Доступы к сервису интеграции (account и secure) необходимо [запросить по почте у СДЭК](mailto:integrator@cdek.ru).*** 
 
 Доступы от личного кабинета не подходят.
 
@@ -98,7 +98,10 @@ try {
         }
     }
     if ($result->isOk()) {
-        //Запрос успешно выполнился
+        // Запрос успешно выполнился
+
+        // Если не проверять $result->isOk() и в ответе будут ошибки,
+        // то выбросится исключение RequestException
     }
 } catch (\CdekSDK2\Exceptions\RequestException $exception) {
     $exception->getMessage(); //Сообщение об ошибке

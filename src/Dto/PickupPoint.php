@@ -112,6 +112,20 @@ class PickupPoint
     public $allowed_cod;
 
     /**
+     * Работает ли офис с LTL (сборный груз)
+     * @Type("bool")
+     * @var bool
+     */
+    public $is_ltl;
+
+    /**
+     * Работает ли офис с "Фулфилмент. Приход"
+     * @Type("bool")
+     * @var bool
+     */
+    public $fulfillment;
+
+    /**
      * Ближайшая станция/остановка транспорта
      * @Type("string")
      * @var string

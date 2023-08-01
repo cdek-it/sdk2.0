@@ -39,5 +39,8 @@ class Offices extends Action
         'is_handout' => '',
         'is_reception' => '',
         'fias_guid' => '',
+        'code' => '',
+        'is_ltl' => '',
+        'fulfillment' => '',
     ];
 }

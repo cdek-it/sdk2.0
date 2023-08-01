@@ -81,13 +81,16 @@ $res = $cdek->orders()->add($order);
 
 if ($res->hasErrors()) {
     // Обрабатываем ошибки
+    // Если этого не сделать, в будущем будет ошибка RequestException
     foreach ($res->getErrors() as $error) {
         //считываем ошибки
     }
 }
 if ($res->isOk()) {
     $cdek_order = $cdek->formatResponse($res, \CdekSDK2\BaseTypes\Order::class);
-//    $cdek_order->entity->uuid;
+    // $cdek_order->entity->uuid;
+    // Если попытаться обработать ответ без проверки $res->isOk()
+    // и при этом в ответе будут ошибки, то здесь выбросится исключение RequestException
 }
 
 // получение информации о заказе
