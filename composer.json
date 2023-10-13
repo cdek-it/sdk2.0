@@ -1,5 +1,5 @@
 {
-  "name": "ttatpuot/cdek-sdk2.0",
+  "name": "cdek-it/cdek-sdk2.0",
   "type": "library",
   "description": "PHP SDK для API v2.0 от сервиса интеграции компании СДЭК",
   "keywords": [
@@ -22,6 +22,11 @@
       "name": "Anton Neverov",
       "homepage": "https://github.com/TTATPuOT",
       "role": "Contributor"
+    },
+    {
+      "name": "Alex V",
+      "email": "a.viarvelskii@cdek.ru",
+      "role": "Maintainer"
     }
   ],
   "require": {

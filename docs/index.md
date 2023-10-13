@@ -6,7 +6,7 @@
 ## Установка
 
 ```bash
-composer require ttatpuot/cdek-sdk2.0
+composer require cdek-it/cdek-sdk2.0
 ```
 Требования — минимальны. Нужен PHP 7.1/8.0 или выше.
 
@@ -23,6 +23,25 @@ $cdek = new \CdekSDK2\Client($client, 'account', 'secure');
 
 Далее для всей работы с API используются методы объёкта `$cdek`, который мы получили выше.
 
+### Laravel
+
+Не пытайтесь использовать `Illuminate\Support\Facades\Http::buildClient()` для создания клиента.
+Эта обёртка ломает поведение клиента PSR-18.
+Воспользуйтесь [Guzzle](https://github.com/guzzle/guzzle) и [модулем PSR-18](https://github.com/mjelamanov/psr18-guzzle) или любым другим сторонним PSR-18 совместимым клиентом.
+
+
+### Использование с Guzzle
+
+Использование с [Guzzle](https://github.com/guzzle/guzzle) и [его модулем PSR-18](https://github.com/mjelamanov/psr18-guzzle):
+```php
+use CdekSDK2\Client as SdekClient;
+use GuzzleHttp\Client as HttpClient;
+
+$client = new HttpClient();
+$cdek = new SdekClient($client);
+$cdek->setAccount('account');
+$cdek->setSecure('secure');
+```
 
 ### Тестирование работы сервиса
 
