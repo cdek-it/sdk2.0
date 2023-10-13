@@ -1,7 +1,7 @@
 {
   "name": "ttatpuot/cdek-sdk2.0",
   "type": "library",
-  "description": "Рабочий и поддерживаемый PHP SDK для API v2.0 СДЭК",
+  "description": "PHP SDK для API v2.0 от сервиса интеграции компании СДЭК",
   "keywords": [
     "CDEK",
     "sdk",
@@ -75,7 +75,7 @@
     "psalm": "./vendor/bin/psalm -c=psalm.xml"
   },
   "support": {
-    "issues": "https://github.com/ttatpuot/cdek-sdk2.0/issues",
-    "docs": "https://github.com/ttatpuot/cdek-sdk2.0/blob/master/README.md"
+    "issues": "https://github.com/cdek-it/sdk2.0/issues",
+    "docs": "https://github.com/cdek-it/sdk2.0/blob/master/README.md"
   }
 }
