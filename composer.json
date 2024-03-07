@@ -27,7 +27,7 @@
   "require": {
     "php": "^7.1 || ^8.0",
     "ext-json": "*",
-    "jms/serializer": "^3",
+    "jms/serializer": "^3.29.1",
     "nyholm/psr7": "^1.2",
     "psr/http-client": "^1.0",
     "rakit/validation": "^1.1"
