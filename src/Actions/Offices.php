@@ -42,5 +42,7 @@ class Offices extends Action
         'code' => '',
         'is_ltl' => '',
         'fulfillment' => '',
+        'size' => 0,
+        'page' => 0,
     ];
 }
