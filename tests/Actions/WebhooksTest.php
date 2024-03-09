@@ -55,8 +55,12 @@ class WebhooksTest extends TestCase
   "date_time": "2019-07-11T13:07:34+0700",
   "uuid": "72753031-8347-40c0-ab0f-1a49c7a262c1",
   "attributes": {
+    "is_return": false,
+    "is_reverse": false,
+    "is_client_return": false,
     "cdek_number": "1106153417",
     "number": "1106152821",
+    "code": "DELIVERED",
     "status_code": "4",
     "status_date_time": "2019-07-11T12:41:43+0700",
     "city": "Новосибирск"

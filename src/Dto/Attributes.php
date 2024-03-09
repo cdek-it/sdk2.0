@@ -16,6 +16,20 @@ class Attributes
     public $is_return;
 
     /**
+     * Признак возвратного заказа
+     * @Type("bool")
+     * @var bool
+     */
+    public $is_reverse;
+
+    /**
+     * Признак клиентского возврата
+     * @Type("bool")
+     * @var bool
+     */
+    public $is_client_return;
+
+    /**
      * Номер заказа СДЭК
      * @Type("int")
      * @var int
@@ -33,6 +47,15 @@ class Attributes
      * Код статуса
      * @Type("string")
      * @var string
+     * @deprecated
+     */
+    public $code;
+
+    /**
+     * Код статуса
+     * @Type("string")
+     * @var string
+     * @deprecated
      */
     public $status_code;
 
@@ -70,4 +93,6 @@ class Attributes
      * @var string
      */
     public $url;
+
+    // @TODO: Support related_entities attribute
 }
