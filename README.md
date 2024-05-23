@@ -59,7 +59,7 @@ composer require cdek-it/sdk2.0
 ***
 ### Документация
 
-[Полная документация располагается тут](docs/index.md)
+[Полная документация располагается тут](https://github.com/cdek-it/sdk2.0/wiki)
 
 
 ***

@@ -35,7 +35,8 @@
     "jms/serializer": "^3.29.1",
     "nyholm/psr7": "^1.2",
     "psr/http-client": "^1.0",
-    "rakit/validation": "^1.1"
+    "rakit/validation": "^1.1",
+    "doctrine/annotations": "^2.0"
   },
   "conflict": {},
   "require-dev": {
@@ -47,8 +48,7 @@
     "phpunit/phpunit": "^8.5 || ^9.3",
     "squizlabs/php_codesniffer": "*",
     "symfony/http-client": "^5.4.22",
-    "vimeo/psalm": ">=3.0.16",
-    "doctrine/annotations": "^1.14.3"
+    "vimeo/psalm": ">=3.0.16"
   },
   "config": {
     "sort-packages": true,
