@@ -278,13 +278,13 @@ class Constants
      * Аккаунт для тестовой среды
      * @var string
      */
-    public const TEST_ACCOUNT = 'EMscd6r9JnFiQ3bLoyjJY6eM78JrJceI';
+    public const TEST_ACCOUNT = 'wqGwiQx0gg8mLtiEKsUinjVSICCjtTEP';
 
     /**
      * Секретный ключ для тестовой среды
      * @var string
      */
-    public const TEST_SECURE = 'PjLZkKBHEiLK3YsjtNrt3TGNG0ahs3kG';
+    public const TEST_SECURE = 'RmAmgvSgSl1yirlz9QupbzOJVqhCxcP5';
 
     /**
      * Тип связанной сущности: возвратный заказ
