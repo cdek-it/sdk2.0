@@ -201,4 +201,11 @@ class OrderInfo
      * @var DeliveryDetail
      */
     public $delivery_detail;
+
+    /**
+     * Плановая дата доставки. Передаётся при приёмке груза на склад date(yyyy-MM-dd)	
+     * @Type("string")
+     * @var string
+     */
+    public $plannedDeliveryDate;
 }
