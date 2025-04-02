@@ -49,7 +49,7 @@ class CalculatorTest extends TestCase
         $tarifflist = Tarifflist::create([]);
         $tarifflist->date = (new \DateTime())->format(\DateTime::ISO8601);
         $tarifflist->type = Tarifflist::TYPE_ECOMMERCE;
-        $tarifflist->currecy = Currencies::RUBLE;
+        $tarifflist->currency = Currencies::RUBLE;
         $tarifflist->lang = Tarifflist::LANG_RUS;
 
         $tarifflist->from_location = Location::create([
@@ -91,7 +91,7 @@ class CalculatorTest extends TestCase
         $tariff = Tariff::create([]);
         $tariff->date = (new \DateTime())->format(\DateTime::ISO8601);
         $tariff->type = Tariff::TYPE_ECOMMERCE;
-        $tariff->currecy = Currencies::RUBLE;
+        $tariff->currency = Currencies::RUBLE;
         $tariff->lang = Tariff::LANG_RUS;
         //TODO: Перенести номера тарифов в константы
         $tariff->tariff_code = 139; //Посылка дверь-дверь
