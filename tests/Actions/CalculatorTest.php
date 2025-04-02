@@ -59,6 +59,7 @@ class CalculatorTest extends TestCase
         ]);
 
         $tarifflist->to_location = Location::create([
+            'postal_code' => '630004',
             'address' => 'Ленина 23-1',
             'code' => 270,
             'country_code' => 'RU'
@@ -103,6 +104,7 @@ class CalculatorTest extends TestCase
         ]);
 
         $tariff->to_location = Location::create([
+            'postal_code' => '630004',
             'address' => 'Ленина 23-1',
             'code' => 270,
             'country_code' => 'RU'

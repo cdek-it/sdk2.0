@@ -115,7 +115,7 @@ class Location extends Base
             'address' => 'required',
             'code' => 'numeric',
             'fias_guid' => 'alpha',
-            'postal_code' => 'alpha',
+            'postal_code' => 'alpha_num',
             'longitude' => 'numeric',
             'latitude' => 'numeric',
             'country_code' => 'alpha:2',
