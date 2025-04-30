@@ -20,6 +20,13 @@ class Tariff extends Tarifflist
     public $tariff_code;
 
     /**
+     * Дополнительные услуги
+     * @Type("array<CdekSDK2\BaseTypes\Services>")
+     * @var Services[]
+     */
+    public $services;
+
+    /**
      * Intake constructor.
      * @param array $param
      */
@@ -28,5 +35,13 @@ class Tariff extends Tarifflist
         parent::__construct($param);
 
         $this->rules['tariff_code'] = 'numeric|required';
+        $this->rules['services'] = [
+            '',
+            function ($value) {
+                if ($value instanceof Services) {
+                    return $value->validate();
+                }
+            }
+        ];
     }
 }
