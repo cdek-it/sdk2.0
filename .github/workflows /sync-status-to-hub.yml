@@ -1,0 +1,400 @@
+name: 📡 Sync Status to Hub
+
+on:
+  issues:
+    types: [closed, reopened, labeled, unlabeled]
+  issue_comment:
+    types: [created, edited]
+
+jobs:
+  sync-to-hub:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if from Hub and sync status
+        uses: actions/github-script@v7
+        env:
+          HUB_PAT: ${{ secrets.ADD_TO_PROJECT_PAT }}
+        with:
+          script: |
+            const { issue, label, comment } = context.payload;
+
+            // Для событий комментариев проверяем, что комментарий в issue из Hub
+            if (context.eventName === 'issue_comment') {
+              const issueForComment = context.payload.issue;
+              const isFromHub = issueForComment.labels.some(label => label.name === 'state/from-hub');
+              if (!isFromHub) {
+                console.log('ℹ️ Not a Hub issue comment, skipping sync');
+                return;
+              }
+              
+              // Ищем номер Hub issue в описании
+              const hubIssueMatch = issueForComment.body.match(/Hub Issue.*#(\d+)/);
+              if (!hubIssueMatch) {
+                console.log('❌ Hub issue reference not found in comment issue');
+                return;
+              }
+              
+              const hubIssueNumber = parseInt(hubIssueMatch[1]);
+              const [hubOwner, hubRepoName] = '${{ github.repository_owner }}/cdek-ui'.split('/');
+              
+              await syncCommentToHub(comment, issueForComment, hubIssueNumber, hubOwner, hubRepoName);
+              return;
+            }
+            
+            // Проверяем что задача создана из Hub
+            const isFromHub = issue.labels.some(label => label.name === 'state/from-hub');
+            if (!isFromHub) {
+              console.log('ℹ️ Not a Hub issue, skipping sync');
+              return;
+            }
+            
+            // Ищем номер Hub issue в описании
+            const hubIssueMatch = issue.body.match(/Hub Issue.*#(\d+)/);
+            if (!hubIssueMatch) {
+              console.log('❌ Hub issue reference not found');
+              return;
+            }
+            
+            const hubIssueNumber = parseInt(hubIssueMatch[1]);
+            const hubRepo = '${{ github.repository_owner }}/cdek-ui';
+            
+            // Определяем тип события для синхронизации лейблов
+            if (context.eventName === 'issues' && (context.payload.action === 'labeled' || context.payload.action === 'unlabeled')) {
+              await syncLabelsToHub(issue, hubIssueNumber, hubRepo, label);
+            }
+            
+            await syncStatusToHub(issue, hubIssueNumber, hubRepo);
+            
+            async function syncStatusToHub(satelliteIssue, hubIssueNumber, hubRepo) {
+              let status = '';
+              let statusMessage = '';
+              let shouldReopen = false;
+              
+              // Определяем статус на основе состояния и лейблов
+              if (satelliteIssue.state === 'closed') {
+                status = 'closed';
+                statusMessage = '✅ Завершено в Satellite';
+              } else if (satelliteIssue.state === 'open') {
+                // Если issue была переоткрыта (reopened)
+                if (context.payload.action === 'reopened') {
+                  status = 'open';
+                  statusMessage = '🔄 Переоткрыто в Satellite';
+                  shouldReopen = true;
+                  }
+               } else if (satelliteIssue.state === 'open') {
+                // Проверяем наличие лейбла status/in-progress
+                const hasInProgressLabel = satelliteIssue.labels.some(label => label.name === 'status/in-progress');
+                if (hasInProgressLabel) {
+                  status = 'status/in-progress';
+                  statusMessage = '🔧 В работе';
+                } else {
+                  status = 'open';
+                  statusMessage = '📋 Открыто в Satellite';
+                }
+              }
+              
+              if (!status) return;
+              
+              // Отправляем статус в Hub
+              await updateHubStatus(hubIssueNumber, status, statusMessage, satelliteIssue, hubRepo, shouldReopen);
+            }
+            
+            async function syncLabelsToHub(satelliteIssue, hubIssueNumber, hubRepo, changedLabel) {
+              try {
+                const syncPrefixes = ['status/', 'priority/', 'area/', 'type/'];
+                const changedLabelName = changedLabel?.name;
+                
+                // Проверяем, относится ли измененный лейбл к синхронизируемым
+                const shouldSync = syncPrefixes.some(prefix => changedLabelName?.startsWith(prefix));
+                if (!shouldSync) {
+                  console.log('ℹ️ Label not in sync scope: ' + changedLabelName);
+                  return;
+                }
+                
+                console.log('🔄 Syncing label: ' + changedLabelName);
+                
+                // Получаем текущие лейблы satellite issue
+                const currentLabels = satelliteIssue.labels.map(l => l.name);
+                
+                // Фильтруем лейблы для синхронизации - берем ВСЕ лейблы с нужными префиксами
+                const labelsToSync = currentLabels.filter(labelName => 
+                  syncPrefixes.some(prefix => labelName.startsWith(prefix))
+                );
+                
+                console.log('📋 All labels to sync from satellite: ' + labelsToSync.join(', '));
+                
+                // Получаем текущие лейблы hub issue используя PAT
+                const hubIssueResponse = await fetch(
+                  `https://api.github.com/repos/${hubRepo}/issues/${hubIssueNumber}`,
+                  {
+                    headers: {
+                      'Authorization': `token ${process.env.HUB_PAT}`,
+                      'Accept': 'application/vnd.github.v3+json'
+                    }
+                  }
+                );
+                
+                if (!hubIssueResponse.ok) {
+                  throw new Error(`Failed to get hub issue: ${hubIssueResponse.status}`);
+                }
+                
+                const hubIssue = await hubIssueResponse.json();
+                const currentHubLabels = hubIssue.labels.map(l => l.name);
+                
+                // Определяем какие лейблы нужно удалить из hub
+                const labelsToRemove = [];
+                
+                // Для каждого префикса находим текущий лейбл в hub и сравниваем с satellite
+                for (const prefix of syncPrefixes) {
+                  const satelliteLabelForPrefix = labelsToSync.find(label => label.startsWith(prefix));
+                  const hubLabelForPrefix = currentHubLabels.find(label => label.startsWith(prefix));
+                  
+                  // Если в hub есть лейбл этого префикса, но в satellite его нет или он другой - удаляем
+                  if (hubLabelForPrefix && hubLabelForPrefix !== satelliteLabelForPrefix) {
+                    labelsToRemove.push(hubLabelForPrefix);
+                  }
+                  
+                  // Если в satellite есть лейбл, но в hub его нет - он будет добавлен ниже
+                }
+                
+                // Удаляем старые лейблы из hub
+                for (const labelToRemove of labelsToRemove) {
+                  await fetch(
+                    `https://api.github.com/repos/${hubRepo}/issues/${hubIssueNumber}/labels/${encodeURIComponent(labelToRemove)}`,
+                    {
+                      method: 'DELETE',
+                      headers: {
+                        'Authorization': `token ${process.env.HUB_PAT}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                      }
+                    }
+                  );
+                  console.log('🗑️ Removed label from Hub: ' + labelToRemove);
+                }
+                
+                // Добавляем новые лейблы (только те, которых нет в hub)
+                const labelsToAdd = labelsToSync.filter(labelName => 
+                  !currentHubLabels.includes(labelName)
+                );
+                
+                if (labelsToAdd.length > 0) {
+                  await fetch(
+                    `https://api.github.com/repos/${hubRepo}/issues/${hubIssueNumber}/labels`,
+                    {
+                      method: 'POST',
+                      headers: {
+                        'Authorization': `token ${process.env.HUB_PAT}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/vnd.github.v3+json'
+                      },
+                      body: JSON.stringify(labelsToAdd)
+                    }
+                  );
+                  console.log('✅ Added labels to Hub: ' + labelsToAdd.join(', '));
+                }
+                
+                // Создаем комментарий о синхронизации лейблов
+                if (labelsToRemove.length > 0 || labelsToAdd.length > 0) {
+                  const commentLines = [];
+                  
+                  if (labelsToAdd.length > 0) {
+                    commentLines.push('**Добавлены**: `' + labelsToAdd.join('`, `') + '`');
+                  }
+                  
+                  if (labelsToRemove.length > 0) {
+                    commentLines.push('**Удалены**: `' + labelsToRemove.join('`, `') + '`');
+                  }
+                  
+                  // Добавляем информацию о текущих синхронизированных лейблах
+                  const currentSyncInfo = [];
+                  for (const prefix of syncPrefixes) {
+                    const labelForPrefix = labelsToSync.find(label => label.startsWith(prefix));
+                    if (labelForPrefix) {
+                      currentSyncInfo.push(`**${prefix}**: \`${labelForPrefix}\``);
+                    }
+                  }
+                  
+                  if (currentSyncInfo.length > 0) {
+                    commentLines.push('**Текущие синхронизированные лейблы**:\n' + currentSyncInfo.join('\n'));
+                  }
+                }
+                
+                console.log(`✅ Synced labels to Hub #${hubIssueNumber}`);
+                
+              } catch (error) {
+                console.log(`❌ Failed to sync labels to Hub: ${error.message}`);
+              }
+            }
+
+            async function syncCommentToHub(satelliteComment, satelliteIssue, hubIssueNumber, hubOwner, hubRepo) {
+              try {
+                console.log('💬 Syncing comment to Hub');
+                
+                // Пропускаем комментарии от ботов и системные комментарии
+                if (satelliteComment.user.type === 'Bot' || 
+                    satelliteComment.body.includes('🔄 Статус обновлен') ||
+                    satelliteComment.body.includes('🏷️ Лейблы синхронизированы') ||
+                    satelliteComment.body.includes('✅ Задача автоматически создана') ||
+                    satelliteComment.body.includes('💬 Комментарий из Hub') ||
+                    satelliteComment.body.includes('🔄 Статус обновлен из Hub')) {
+                  console.log('ℹ️ Skipping bot or system comment');
+                  return;
+                }
+                
+                const commentBody = '**💬 Комментарий из Satellite**\n\n' +
+                                    '**Satellite**: `' + context.repo.repo + '`\n' +
+                                    '**Issue**: [#' + satelliteIssue.number + '](' + satelliteIssue.html_url + ')\n' +
+                                    '**Автор**: @' + satelliteComment.user.login + '\n' +
+                                    '**Время**: ' + new Date(satelliteComment.created_at).toLocaleString() + '\n\n' +
+                                    '---\n\n' +
+                                    satelliteComment.body + '\n\n' +
+                                    '---\n\n' +
+                                    '*Комментарий синхронизирован автоматически*';
+                
+                const response = await fetch(
+                  `https://api.github.com/repos/${hubOwner}/${hubRepo}/issues/${hubIssueNumber}/comments`,
+                  {
+                    method: 'POST',
+                    headers: {
+                      'Authorization': `token ${process.env.HUB_PAT}`,
+                      'Content-Type': 'application/json',
+                      'Accept': 'application/vnd.github.v3+json'
+                    },
+                    body: JSON.stringify({
+                      body: commentBody
+                    })
+                  }
+                );
+                
+                if (!response.ok) {
+                  throw new Error(`Failed to create comment in hub: ${response.status}`);
+                }
+                
+                console.log(`✅ Synced comment to Hub #${hubIssueNumber}`);
+                
+              } catch (error) {
+                console.log(`❌ Failed to sync comment to Hub: ${error.message}`);
+              }
+            }
+            
+            async function updateHubStatus(hubIssueNumber, status, statusMessage, satelliteIssue, hubRepo, shouldReopen = false) {
+              try {
+                // Обновляем комментарий в Hub используя PAT
+                await fetch(
+                  `https://api.github.com/repos/${hubRepo}/issues/${hubIssueNumber}/comments`,
+                  {
+                    method: 'POST',
+                    headers: {
+                      'Authorization': `token ${process.env.HUB_PAT}`,
+                      'Content-Type': 'application/json',
+                      'Accept': 'application/vnd.github.v3+json'
+                    },
+                    body: JSON.stringify({
+                      body: '**🔄 Статус обновлен из Satellite**\n\n' +
+                            '**Satellite**: `' + context.repo.repo + '`\n' +
+                            '**Issue**: [#' + satelliteIssue.number + '](' + satelliteIssue.html_url + ')\n' +
+                            '**Статус**: ' + statusMessage + '\n' +
+                            '**Время**: ' + new Date().toLocaleString()
+                    })
+                  }
+                );
+                
+                // Обновляем метки статуса в Hub
+                const statusLabels = {
+                  'in-progress': 'status/in-progress'
+                };
+                
+                const newStatusLabel = statusLabels[status];
+                if (newStatusLabel) {
+                  // Получаем текущие лейблы hub issue
+                  const hubIssueResponse = await fetch(
+                    `https://api.github.com/repos/${hubRepo}/issues/${hubIssueNumber}`,
+                    {
+                      headers: {
+                        'Authorization': `token ${process.env.HUB_PAT}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                      }
+                    }
+                  );
+                  
+                  if (!hubIssueResponse.ok) {
+                    throw new Error(`Failed to get hub issue: ${hubIssueResponse.status}`);
+                  }
+                  
+                  const hubIssue = await hubIssueResponse.json();
+                  
+                  // Удаляем старые статусные метки
+                  const oldStatusLabels = hubIssue.labels
+                    .filter(label => label.name.startsWith('status/') && label.name !== newStatusLabel)
+                    .map(label => label.name);
+                  
+                  for (const oldLabel of oldStatusLabels) {
+                    await fetch(
+                      `https://api.github.com/repos/${hubRepo}/issues/${hubIssueNumber}/labels/${encodeURIComponent(oldLabel)}`,
+                      {
+                        method: 'DELETE',
+                        headers: {
+                          'Authorization': `token ${process.env.HUB_PAT}`,
+                          'Accept': 'application/vnd.github.v3+json'
+                        }
+                      }
+                    );
+                  }
+                  
+                  // Добавляем новую статусную метку
+                  await fetch(
+                    `https://api.github.com/repos/${hubRepo}/issues/${hubIssueNumber}/labels`,
+                    {
+                      method: 'POST',
+                      headers: {
+                        'Authorization': `token ${process.env.HUB_PAT}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/vnd.github.v3+json'
+                      },
+                      body: JSON.stringify([newStatusLabel])
+                    }
+                  );
+                }
+                
+                // Если задача завершена в Satellite, закрываем в Hub
+                if (status === 'closed') {
+                  await fetch(
+                    `https://api.github.com/repos/${hubRepo}/issues/${hubIssueNumber}`,
+                    {
+                      method: 'PATCH',
+                      headers: {
+                        'Authorization': `token ${process.env.HUB_PAT}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/vnd.github.v3+json'
+                      },
+                      body: JSON.stringify({
+                        state: 'closed'
+                      })
+                    }
+                  );
+                }
+                if (shouldReopen) {
+                  await fetch(
+                    `https://api.github.com/repos/${hubRepo}/issues/${hubIssueNumber}`,
+                    {
+                      method: 'PATCH',
+                      headers: {
+                        'Authorization': `token ${process.env.HUB_PAT}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/vnd.github.v3+json'
+                      },
+                      body: JSON.stringify({
+                        state: 'open'
+                      })
+                    }
+                  );
+                  console.log('🔓 Reopened issue in Hub');
+                }
+                
+                
+                console.log(`✅ Synced status to Hub #${hubIssueNumber}: ${status}`);
+                
+              } catch (error) {
+                console.log(`❌ Failed to sync status to Hub: ${error.message}`);
+              }
+            }
