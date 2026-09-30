@@ -59,6 +59,7 @@ class Base
     }
 
     /**
+     * @psalm-suppress UnsafeInstantiation
      * Создание объекта из массива
      * @param array $data
      * @return static

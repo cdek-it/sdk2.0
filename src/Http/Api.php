@@ -243,7 +243,7 @@ class Api
             $response = $this->client->sendRequest($request);
             return new ApiResponse($response);
         } catch (ClientExceptionInterface $e) {
-            throw new RequestException($e->getMessage(), (int)$e->getCode());
+            throw new RequestException($e->getMessage(), $e->getCode());
         } catch (\Exception $e) {
             throw new RequestException($e->getMessage(), (int)$e->getCode());
         }

@@ -11,6 +11,7 @@ use CdekSDK2\Actions\Invoices;
 use CdekSDK2\Actions\LocationCities;
 use CdekSDK2\Actions\LocationRegions;
 use CdekSDK2\Actions\Offices;
+use CdekSDK2\Actions\OfficesByPolygons;
 use CdekSDK2\Actions\Orders;
 use CdekSDK2\Actions\Webhooks;
 use CdekSDK2\Dto\CityList;
@@ -41,57 +42,61 @@ class Client
      * Объект для взаимодействия с API СДЭК
      * @var Api
      */
-    private $http_client;
+    protected $http_client;
 
     /**
      * @var Serializer
      */
-    private $serializer;
+    protected $serializer;
 
     /**
      * @var Orders
      */
-    private $orders;
+    protected $orders;
 
     /**
      * @var Intakes
      */
-    private $intakes;
+    protected $intakes;
 
     /**
      * @var Calculator
      */
-    private $calculator;
+    protected $calculator;
 
     /**
      * @var Webhooks
      */
-    private $webhooks;
+    protected $webhooks;
 
     /**
      * @var Offices
      */
-    private $offices;
+    protected $offices;
 
     /**
      * @var Barcodes
      */
-    private $barcodes;
+    protected $barcodes;
 
     /**
      * @var Invoices
      */
-    private $invoices;
+    protected $invoices;
 
     /**
      * @var LocationRegions
      */
-    private $regions;
+    protected $regions;
 
     /**
      * @var LocationCities
      */
-    private $cities;
+    protected $cities;
+    /**
+     * @var OfficesByPolygons
+     */
+    protected $officesByPolygons;
 
     /**
      * Client constructor.
@@ -318,6 +323,14 @@ class Client
         return $this->barcodes;
     }
 
+    public function officesByCoordinates(): OfficesByPolygons
+    {
+        if ($this->officesByPolygons === null) {
+            $this->officesByPolygons = new OfficesByPolygons($this->http_client, $this->serializer);
+        }
+        return $this->officesByPolygons;
+    }
+
     /**
      * @param ApiResponse $response
      * @param string $className
@@ -337,7 +350,15 @@ class Client
         $result->entity = null;
 
         $array_response = json_decode($response->getBody(), true);
-        $entity = $this->serializer->deserialize(json_encode($array_response['entity']), $className, 'json');
+        $json_encode = json_encode($array_response['entity']);
+
+        if ($json_encode === false) {
+            throw new ParsingException(
+                json_last_error_msg()
+            );
+        }
+
+        $entity = $this->serializer->deserialize($json_encode, $className, 'json');
         $result->entity = $entity;
 
         return $result;

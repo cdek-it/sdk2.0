@@ -45,13 +45,13 @@ class Action
 
     /**
      * Получить данные по uuid
-     * @param string $uuid
+     * @param string $filter
      * @return ApiResponse
      * @throws RequestException
      */
-    public function get(string $uuid): ApiResponse
+    public function get(string $filter): ApiResponse
     {
-        return $this->http_client->get($this->slug($uuid));
+        return $this->http_client->get($this->slug($filter));
     }
 
     /**
@@ -72,7 +72,7 @@ class Action
      */
     protected function slug(string $uuid = null): string
     {
-        if (empty($uuid)) {
+        if ($uuid === null) {
             return static::URL;
         }
         return static::URL . '/' . $uuid;

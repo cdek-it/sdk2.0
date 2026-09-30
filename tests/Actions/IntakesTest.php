@@ -38,7 +38,7 @@ class IntakesTest extends TestCase
         \Doctrine\Common\Annotations\AnnotationReader::addGlobalIgnoredName('phan');
 
         /** @phan-suppress-next-line PhanDeprecatedFunction */
-        \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
+        \Doctrine\Common\Annotations\AnnotationRegistry::loadAnnotationClass('class_exists');
     }
 
     protected function tearDown(): void
