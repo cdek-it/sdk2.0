@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CdekSDK2\Actions;
 
+use CdekSDK2\Exceptions\RequestException;
 use CdekSDK2\Http\ApiResponse;
 
 trait FilteredTrait
@@ -43,6 +44,7 @@ trait FilteredTrait
      * Переиспользуем стандартный метод
      * @param string $filter
      * @return ApiResponse
+     * @throws RequestException
      */
     public function get(string $filter = ''): ApiResponse
     {
